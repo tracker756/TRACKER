@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -297,15 +297,29 @@ border-radius: 20px;
 <h1>User Profile</h1>
 <p>Account details and controls</p>
 </div>
-<div class="content-area" style="padding-top:30px;">
+<div class="content-area" style="padding-top:20px;">
 <div class="product-card">
 <div class="row-detail"><span>Name:</span><span class="val user-display-name">User</span></div>
+<div class="row-detail"><span>Email:</span><span class="val" id="user-display-email">N/A</span></div>
 <div class="row-detail"><span>Mobile:</span><span class="val" id="user-display-phone">N/A</span></div>
 </div>
-<div class="product-card" style="text-align: center; cursor: pointer;" onclick="openWhatsAppSupport()">
+
+<!-- Today Claim History Section -->
+<div class="section-title">Today's Claim History</div>
+<div class="history-card" id="profile-today-claims">
+<p style="font-size:12px; color:#888; text-align:center;">No claims made today.</p>
+</div>
+
+<!-- Cashback History Section -->
+<div class="section-title">Cashback History</div>
+<div class="history-card" id="profile-cashback-history">
+<p style="font-size:12px; color:#888; text-align:center;">No cashback history found.</p>
+</div>
+
+<div class="product-card" style="text-align: center; cursor: pointer; margin-top: 15px;" onclick="openWhatsAppSupport()">
 💬 <strong>Contact Support on WhatsApp</strong>
 </div>
-<button class="btn-primary" style="background:#dc3545;" id="logout-btn">Logout</button>
+<button class="btn-primary" style="background:#dc3545; margin-top:10px;" id="logout-btn">Logout</button>
 </div>
 </div>
 
@@ -547,7 +561,9 @@ cashback: 0,
 referrals: 0,
 referralCode: myRefCode,
 referredBy: refCode || null,
-activeProducts: {}
+activeProducts: {},
+claimHistory: [],
+cashbackHistory: []
 });
 
 if (refCode) {
@@ -626,6 +642,7 @@ onSnapshot(doc(db, "users", user.uid), (docSnap) => {
 if (docSnap.exists()) {
 userData = docSnap.data();
 document.querySelectorAll(".user-display-name").forEach(e => e.innerText = userData.name || "User");
+document.getElementById("user-display-email").innerText = userData.email || user.email;
 document.getElementById("user-display-phone").innerText = userData.phone || "N/A";
 document.getElementById("val-balance").innerText = "₹" + (userData.balance || 0).toFixed(2);
 document.getElementById("val-deposit").innerText = "₹" + (userData.deposit || 0);
@@ -643,6 +660,9 @@ totalDailyRate += (userData.activeProducts[key].dailyRate || 0);
 }
 }
 document.getElementById("val-daily-earning").innerText = "₹" + totalDailyRate;
+
+// Render Profile Histories
+renderProfileHistories();
 }
 });
 
@@ -656,6 +676,39 @@ authScreen.style.display = "block";
 dashboardScreen.style.display = "none";
 }
 });
+
+function renderProfileHistories() {
+// Today's Claims
+const claimsContainer = document.getElementById("profile-today-claims");
+let claims = userData.claimHistory || [];
+let todayStr = new Date().toDateString();
+let todayClaims = claims.filter(c => new Date(c.time).toDateString() === todayStr);
+
+if (todayClaims.length === 0) {
+claimsContainer.innerHTML = `<p style="font-size:12px; color:#888; text-align:center;">No claims made today.</p>`;
+} else {
+let html = "";
+todayClaims.forEach(c => {
+let timeStr = new Date(c.time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+html += `<div class="history-item"><div><strong>₹${c.amount} Claimed</strong><div style="font-size:11px; color:#777;">${c.title}</div></div><span style="font-size:11px; color:#555;">${timeStr}</span></div>`;
+});
+claimsContainer.innerHTML = html;
+}
+
+// Cashback History
+const cashbackContainer = document.getElementById("profile-cashback-history");
+let cHistory = userData.cashbackHistory || [];
+if (cHistory.length === 0) {
+cashbackContainer.innerHTML = `<p style="font-size:12px; color:#888; text-align:center;">No cashback history found.</p>`;
+} else {
+let html = "";
+cHistory.forEach(cb => {
+let dateStr = new Date(cb.time).toLocaleDateString();
+html += `<div class="history-item"><div><strong>+₹${cb.amount}</strong><div style="font-size:11px; color:#777;">${cb.source}</div></div><span style="font-size:11px; color:#555;">${dateStr}</span></div>`;
+});
+cashbackContainer.innerHTML = html;
+}
+}
 
 // DYNAMIC PRODUCTS FETCH & TIMER LOGIC
 function loadDynamicProducts() {
@@ -698,7 +751,7 @@ let lastClaim = userProds[pId].lastClaimTime || userProds[pId].buyTime;
 let timePassed = now - lastClaim;
 
 if (timePassed >= oneDayInMs) {
-btnHTML = `<button class="btn-action" style="background:#ffb703;" onclick="claimDailyIncome('${pId}', ${p.dailyIncome})">Claim Daily Income (₹${p.dailyIncome})</button>`;
+btnHTML = `<button class="btn-action" style="background:#ffb703;" onclick="claimDailyIncome('${pId}', '${p.title.replace(/'/g, "")}', ${p.dailyIncome})">Claim Daily Income (₹${p.dailyIncome})</button>`;
 } else {
 let timeLeftMin = Math.ceil((oneDayInMs - timePassed) / (1000 * 60));
 let hours = Math.floor(timeLeftMin / 60);
@@ -795,13 +848,19 @@ let uData = userDocSnap.data();
 let newBal = (uData.balance || 0) + amount;
 let newDep = (uData.deposit || 0) + amount;
 let cashbackBonus = (amount >= 700 && !uData.cashbackClaimed) ? 100 : 0;
-if(cashbackBonus > 0) newBal += cashbackBonus;
+let cHistory = uData.cashbackHistory || [];
+
+if(cashbackBonus > 0) {
+newBal += cashbackBonus;
+cHistory.unshift({ amount: cashbackBonus, source: "Recharge Cashback (₹700+ Offer)", time: Date.now() });
+}
 
 await updateDoc(userDocRef, {
 balance: newBal,
 deposit: newDep,
 cashback: (uData.cashback || 0) + cashbackBonus,
-cashbackClaimed: true
+cashbackClaimed: true,
+cashbackHistory: cHistory
 });
 }
 alert("Deposit approved successfully!");
@@ -949,7 +1008,7 @@ teamContainer.innerHTML = html;
 });
 }
 
-window.claimDailyIncome = async (prodKey, dailyRate) => {
+window.claimDailyIncome = async (prodKey, prodTitle, dailyRate) => {
 let activeProducts = userData.activeProducts || {};
 if (!activeProducts[prodKey] || !activeProducts[prodKey].active) return;
 let prod = activeProducts[prodKey];
@@ -960,8 +1019,11 @@ let lastClaim = prod.lastClaimTime || prod.buyTime;
 if ((now - lastClaim) >= oneDayInMs) {
 prod.lastClaimTime = now;
 let newBalance = (userData.balance || 0) + dailyRate;
+let claimHistory = userData.claimHistory || [];
+claimHistory.unshift({ amount: dailyRate, title: prodTitle, time: now });
+
 try {
-await updateDoc(doc(db, "users", currentUser.uid), { balance: newBalance, activeProducts: activeProducts });
+await updateDoc(doc(db, "users", currentUser.uid), { balance: newBalance, activeProducts: activeProducts, claimHistory: claimHistory });
 alert(`🎉 Successfully claimed ₹${dailyRate}!`);
 loadDynamicProducts();
 } catch (e) { alert("Error: " + e.message); }
@@ -996,7 +1058,10 @@ const snap1 = await getDocs(q1);
 snap1.forEach(async (doc1) => {
 let user1Data = doc1.data();
 let comm1 = price * 0.10;
-await updateDoc(doc(db, "users", doc1.id), { balance: (user1Data.balance || 0) + comm1, cashback: (user1Data.cashback || 0) + comm1 });
+let cHist1 = user1Data.cashbackHistory || [];
+cHist1.unshift({ amount: comm1, source: "Level 1 Referral Commission", time: Date.now() });
+
+await updateDoc(doc(db, "users", doc1.id), { balance: (user1Data.balance || 0) + comm1, cashback: (user1Data.cashback || 0) + comm1, cashbackHistory: cHist1 });
 
 let level2ReferrerCode = user1Data.referredBy;
 if (level2ReferrerCode) {
@@ -1005,7 +1070,10 @@ const snap2 = await getDocs(q2);
 snap2.forEach(async (doc2) => {
 let user2Data = doc2.data();
 let comm2 = price * 0.05;
-await updateDoc(doc(db, "users", doc2.id), { balance: (user2Data.balance || 0) + comm2, cashback: (user2Data.cashback || 0) + comm2 });
+let cHist2 = user2Data.cashbackHistory || [];
+cHist2.unshift({ amount: comm2, source: "Level 2 Referral Commission", time: Date.now() });
+
+await updateDoc(doc(db, "users", doc2.id), { balance: (user2Data.balance || 0) + comm2, cashback: (user2Data.cashback || 0) + comm2, cashbackHistory: cHist2 });
 
 let level3ReferrerCode = user2Data.referredBy;
 if (level3ReferrerCode) {
@@ -1014,7 +1082,10 @@ const snap3 = await getDocs(q3);
 snap3.forEach(async (doc3) => {
 let user3Data = doc3.data();
 let comm3 = price * 0.01;
-await updateDoc(doc(db, "users", doc3.id), { balance: (user3Data.balance || 0) + comm3, cashback: (user3Data.cashback || 0) + comm3 });
+let cHist3 = user3Data.cashbackHistory || [];
+cHist3.unshift({ amount: comm3, source: "Level 3 Referral Commission", time: Date.now() });
+
+await updateDoc(doc(db, "users", doc3.id), { balance: (user3Data.balance || 0) + comm3, cashback: (user3Data.cashback || 0) + comm3, cashbackHistory: cHist3 });
 });
 }
 });
