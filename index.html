@@ -21,17 +21,23 @@ button.btn-primary { width: 100%; padding: 13px; background-color: #10a330; colo
 .forgot-btn { background: none; color: #666; border: none; margin-top: 8px; font-size: 12px; cursor: pointer; text-decoration: underline; display: block; width: 100%; }
 
 /* APP DASHBOARD STYLES */
-.app-container { display: none; width: 100%; max-width: 440px; }
+.app-container { display: none; width: 100%; max-width: 440px; margin: 0 auto; }
 .tab-page { display: none; }
 .tab-page.active-page { display: block; }
+
+/* CENTERED LAYOUT UTILITY FOR PROFILE & REFER DASHBOARDS */
+.centered-tab { text-align: center; }
+.centered-tab .input-group { text-align: left; }
+.centered-tab .user-profile-bar { justify-content: center; text-align: center; flex-direction: column; gap: 8px; }
+.centered-tab .user-profile-left { flex-direction: column; justify-content: center; align-items: center; }
 
 .app-header { background: linear-gradient(180deg, #12b836 0%, #10a330 100%); color: white; padding: 25px 20px 35px 20px; border-bottom-left-radius: 20px; border-bottom-right-radius: 20px; }
 .user-profile-bar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 15px; }
 .user-profile-left { display: flex; align-items: center; gap: 12px; }
-.avatar-icon { width: 45px; height: 45px; background: #ffb703; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; color: white; }
+.avatar-icon { width: 50px; height: 50px; background: #ffb703; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 26px; color: white; margin: 0 auto; }
 .app-header h1 { font-size: 20px; font-weight: 700; }
 .app-header p { font-size: 12px; opacity: 0.9; }
-.logout-header-btn { background: rgba(255,255,255,0.2); border: none; color: white; padding: 6px 12px; border-radius: 12px; font-size: 12px; cursor: pointer; }
+.logout-header-btn { background: rgba(255,255,255,0.2); border: none; color: white; padding: 6px 14px; border-radius: 12px; font-size: 12px; cursor: pointer; }
 
 .content-area { padding: 0 16px; margin-top: -20px; }
 .section-title { font-size: 15px; font-weight: 700; color: #1a1a1a; margin: 20px 0 12px 0; }
@@ -55,9 +61,8 @@ button.btn-primary { width: 100%; padding: 13px; background-color: #10a330; colo
 .row-detail { display: flex; justify-content: space-between; margin: 8px 0; font-size: 13px; color: #555; }
 .row-detail span.val { font-weight: 700; color: #1a1a1a; }
 .btn-action { width: 100%; padding: 11px; background: #10a330; color: white; border: none; border-radius: 10px; font-weight: 600; margin-top: 10px; cursor: pointer; }
-.btn-action:disabled { background: #d1d5db; color: #666; cursor: not-allowed; }
 
-.history-card { background: white; border-radius: 14px; padding: 14px; margin-top: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.03); }
+.history-card { background: white; border-radius: 14px; padding: 14px; margin-top: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.03); text-align: left; }
 .history-item { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #f0f0f0; padding: 8px 0; font-size: 13px; }
 .history-item:last-child { border-bottom: none; }
 .status-pending { color: #f39c12; font-weight: bold; background: #fffdf0; padding: 2px 8px; border-radius: 6px; font-size: 11px; }
@@ -77,25 +82,23 @@ button.btn-primary { width: 100%; padding: 13px; background-color: #10a330; colo
 .nav-icon { font-size: 18px; display: block; margin-bottom: 2px; }
 
 .whatsapp-float { position: fixed; bottom: 75px; right: 20px; background-color: #25d366; color: white; border-radius: 50px; padding: 10px 18px; display: flex; align-items: center; gap: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); text-decoration: none; font-weight: 600; font-size: 13px; z-index: 150; cursor: pointer; }
-.whatsapp-float:hover { background-color: #1ebc57; }
-.whatsapp-icon { font-size: 18px; }
 </style>
 </head>
 <body>
 
-<!-- AUTHENTICATION SCREEN -->
+<!-- FIRST SCREEN: REGISTRATION BY DEFAULT -->
 <div class="auth-container" id="auth-screen">
-<h2 id="form-title">Login</h2>
+<h2 id="form-title">Create Account</h2>
 <p id="form-subtitle">Tracker App</p>
 
-<!-- NORMAL LOGIN / REGISTER FORM -->
+<!-- AUTHENTICATION FORM (DEFAULT: REGISTER) -->
 <div id="standard-auth-box">
-<div class="input-group" id="name-group" style="display: none;">
+<div class="input-group" id="name-group">
 <label>Full Name</label>
-<input type="text" id="reg-name" placeholder="User Name">
+<input type="text" id="reg-name" placeholder="Enter Full Name">
 </div>
 
-<div class="input-group" id="phone-group" style="display: none;">
+<div class="input-group" id="phone-group">
 <label>Mobile Number</label>
 <input type="tel" id="reg-phone" placeholder="e.g. 9876543210">
 </div>
@@ -110,13 +113,13 @@ button.btn-primary { width: 100%; padding: 13px; background-color: #10a330; colo
 <input type="password" id="password" placeholder="••••••••" required>
 </div>
 
-<div class="input-group" id="ref-group" style="display: none;">
+<div class="input-group" id="ref-group">
 <label>Referral Code (Optional)</label>
 <input type="text" id="reg-ref" placeholder="Enter Code">
 </div>
 
-<button class="btn-primary" id="main-btn">Login</button>
-<button class="toggle-btn" id="toggle-btn">Need an account? Register</button>
+<button class="btn-primary" id="main-btn">Create Account</button>
+<button class="toggle-btn" id="toggle-btn">Already have an account? Login</button>
 <button class="forgot-btn" id="forgot-btn" onclick="showOTPResetView()">Forgot Password via Mobile OTP?</button>
 </div>
 
@@ -137,15 +140,14 @@ button.btn-primary { width: 100%; padding: 13px; background-color: #10a330; colo
 <button class="btn-primary" style="margin-top:8px; background:#1a1a1a;" onclick="verifyMobileOTP()">Verify & Login</button>
 </div>
 
-<button class="toggle-btn" onclick="hideOTPResetView()">Back to Login</button>
+<button class="toggle-btn" onclick="hideOTPResetView()">Back to Account Screen</button>
 </div>
-
 </div>
 
 <!-- DASHBOARD MAIN CONTAINER -->
 <div class="app-container" id="dashboard-screen">
 
-<!-- TAB: HOME / DASHBOARD -->
+<!-- TAB 1: HOME DASHBOARD (SHOWS AFTER REGISTRATION/LOGIN) -->
 <div id="page-home" class="tab-page active-page">
 <div class="app-header">
 <div class="user-profile-bar">
@@ -193,13 +195,11 @@ button.btn-primary { width: 100%; padding: 13px; background-color: #10a330; colo
 </div>
 </div>
 
-<!-- RECHARGE HISTORY & STATUS SECTION -->
 <div class="section-title">Recharge History & Status</div>
 <div class="history-card" id="recharge-history-list">
 <p style="font-size:12px; color:#888; text-align:center;">No recharge history found.</p>
 </div>
 
-<!-- WITHDRAWAL HISTORY & STATUS SECTION -->
 <div class="section-title">Withdrawal Requests Status</div>
 <div class="history-card" id="withdrawal-history-list">
 <p style="font-size:12px; color:#888; text-align:center;">No withdrawal history found.</p>
@@ -227,86 +227,22 @@ button.btn-primary { width: 100%; padding: 13px; background-color: #10a330; colo
 </div>
 </div>
 
-<!-- TAB: SILVER PRODUCTS -->
+<!-- TAB 2: PRODUCTS -->
 <div id="page-product" class="tab-page">
 <div class="app-header">
-<h1>Silver Collection</h1>
-<p>Buy Silver items & claim daily income</p>
+<h1>Products Collection</h1>
+<p>Buy items & claim daily income</p>
 </div>
 <div class="content-area">
 <div style="height: 25px;"></div>
-
-<div class="product-card">
-<div class="product-head">
-<div class="product-title">🔗 Silver Chain</div>
-<span class="badge" id="badge-silver_chain">Not Active</span>
-</div>
-<div class="row-detail"><span>Price</span><span class="val">₹700</span></div>
-<div class="row-detail"><span>Cycle</span><span class="val">31 Days</span></div>
-<div class="row-detail"><span>Daily Income</span><span class="val">₹61</span></div>
-<div class="row-detail"><span>Total Return</span><span class="val">₹1,890</span></div>
-<button class="btn-action" id="btn-buy-silver_chain" onclick="buyProduct('silver_chain', 700, 61)">Buy Silver Chain (₹700)</button>
-<button class="btn-action" id="btn-claim-silver_chain" style="display:none; background:#ffb703;" onclick="claimDailyIncome('silver_chain', 61)">Claim Daily Income (₹61)</button>
-</div>
-
-<div class="product-card">
-<div class="product-head">
-<div class="product-title">🪙 Silver Coin (10g)</div>
-<span class="badge" id="badge-silver_coin_10g">Not Active</span>
-</div>
-<div class="row-detail"><span>Price</span><span class="val">₹1,200</span></div>
-<div class="row-detail"><span>Cycle</span><span class="val">28 Days</span></div>
-<div class="row-detail"><span>Daily Income</span><span class="val">₹90</span></div>
-<div class="row-detail"><span>Total Return</span><span class="val">₹2,520</span></div>
-<button class="btn-action" id="btn-buy-silver_coin_10g" onclick="buyProduct('silver_coin_10g', 1200, 90)">Buy Silver Coin (₹1,200)</button>
-<button class="btn-action" id="btn-claim-silver_coin_10g" style="display:none; background:#ffb703;" onclick="claimDailyIncome('silver_coin_10g', 90)">Claim Daily Income (₹90)</button>
-</div>
-
-<div class="product-card">
-<div class="product-head">
-<div class="product-title">📿 Silver Bracelet</div>
-<span class="badge" id="badge-silver_bracelet">Not Active</span>
-</div>
-<div class="row-detail"><span>Price</span><span class="val">₹3,100</span></div>
-<div class="row-detail"><span>Cycle</span><span class="val">31 Days</span></div>
-<div class="row-detail"><span>Daily Income</span><span class="val">₹210</span></div>
-<div class="row-detail"><span>Total Return</span><span class="val">₹6,510</span></div>
-<button class="btn-action" id="btn-buy-silver_bracelet" onclick="buyProduct('silver_bracelet', 3100, 210)">Buy Silver Bracelet (₹3,100)</button>
-<button class="btn-action" id="btn-claim-silver_bracelet" style="display:none; background:#ffb703;" onclick="claimDailyIncome('silver_bracelet', 210)">Claim Daily Income (₹210)</button>
-</div>
-
-<div class="product-card">
-<div class="product-head">
-<div class="product-title">🪙 Silver Coin (30g)</div>
-<span class="badge" id="badge-silver_coin_30g">Not Active</span>
-</div>
-<div class="row-detail"><span>Price</span><span class="val">₹5,100</span></div>
-<div class="row-detail"><span>Cycle</span><span class="val">36 Days</span></div>
-<div class="row-detail"><span>Daily Income</span><span class="val">₹310</span></div>
-<div class="row-detail"><span>Total Return</span><span class="val">₹11,000</span></div>
-<button class="btn-action" id="btn-buy-silver_coin_30g" onclick="buyProduct('silver_coin_30g', 5100, 310)">Buy Silver Coin (₹5,100)</button>
-<button class="btn-action" id="btn-claim-silver_coin_30g" style="display:none; background:#ffb703;" onclick="claimDailyIncome('silver_coin_30g', 310)">Claim Daily Income (₹310)</button>
-</div>
-  
-<div class="product-card">
-<div class="product-head">
-<div class="product-title">🪙 gold Coin (1g)</div>
-<span class="badge" id="badge-silver_coin_30g">Not Active</span>
-</div>
-<div class="row-detail"><span>Price</span><span class="val">₹7999</span></div>
-<div class="row-detail"><span>Cycle</span><span class="val">47 Days</span></div>
-<div class="row-detail"><span>Daily Income</span><span class="val">₹410</span></div>
-<div class="row-detail"><span>Total Return</span><span class="val">₹19,270</span></div>
-<button class="btn-action" id="btn-buy-silver_coin_30g" onclick="buyProduct('GOLD_coin_1g', 7999, 410)">Buy Silver Coin (₹7,999)</button>
-<button class="btn-action" id="btn-claim-silver_coin_30g" style="display:none; background:#ffb703;" onclick="claimDailyIncome('GOLD_coin_30g', 410)">Claim Daily Income (₹310)</button>
-</div>
-</div>
+<div id="dynamic-products-list">
+<p style="font-size:12px; color:#888; text-align:center;">Loading products...</p>
 </div>
 </div>
 </div>
 
-<!-- TAB: REFERRAL & TEAM -->
-<div id="page-team" class="tab-page">
+<!-- TAB 3: REFER & EARN DASHBOARD (CENTER ALIGNED) -->
+<div id="page-team" class="tab-page centered-tab">
 <div class="app-header">
 <h1>Invite & Earn</h1>
 <p>Share with friends & track their details</p>
@@ -326,15 +262,15 @@ button.btn-primary { width: 100%; padding: 13px; background-color: #10a330; colo
 
 <div class="section-title">Commission Rates</div>
 <div class="stats-grid" style="grid-template-columns: 1fr 1fr 1fr;">
-<div class="stat-card" style="padding: 12px;">
+<div class="stat-card" style="padding: 12px; text-align: center;">
 <div class="stat-label">Level 1 (Direct)</div>
 <div class="stat-value" style="color:#28a745; font-size:16px;">10%</div>
 </div>
-<div class="stat-card" style="padding: 12px;">
+<div class="stat-card" style="padding: 12px; text-align: center;">
 <div class="stat-label">Level 2 (Indirect)</div>
 <div class="stat-value" style="color:#10a330; font-size:16px;">5%</div>
 </div>
-<div class="stat-card" style="padding: 12px;">
+<div class="stat-card" style="padding: 12px; text-align: center;">
 <div class="stat-label">Level 3</div>
 <div class="stat-value" style="color:#ffb703; font-size:16px;">1%</div>
 </div>
@@ -342,47 +278,59 @@ button.btn-primary { width: 100%; padding: 13px; background-color: #10a330; colo
 </div>
 </div>
 
-<!-- TAB: USER PROFILE -->
-<div id="page-user" class="tab-page">
+<!-- TAB 4: USER PROFILE DASHBOARD (CENTER ALIGNED WITH EMAIL & STATEMENT) -->
+<div id="page-user" class="tab-page centered-tab">
 <div class="app-header">
-<h1>User Profile</h1>
-<p>Account details and controls</p>
+<div class="user-profile-bar">
+<div class="user-profile-left">
+<div class="avatar-icon">👤</div>
+<h1 class="user-display-name">User</h1>
+</div>
+</div>
+<p>Account details & claimed statement</p>
 </div>
 <div class="content-area" style="padding-top:30px;">
-<div class="product-card">
+<div class="product-card" style="text-align: center;">
 <div class="row-detail"><span>Name:</span><span class="val user-display-name">User</span></div>
+<div class="row-detail"><span>Email ID:</span><span class="val" id="user-display-email">N/A</span></div>
 <div class="row-detail"><span>Mobile:</span><span class="val" id="user-display-phone">N/A</span></div>
 </div>
-<div class="product-card" style="text-align: center; cursor: pointer;" onclick="openWhatsAppSupport()">
+
+<div class="section-title">Claimed Daily Income History</div>
+<div class="history-card" id="claimed-income-history-list">
+<p style="font-size:12px; color:#888; text-align:center;">No income claimed yet.</p>
+</div>
+
+<div class="product-card" style="text-align: center; cursor: pointer; margin-top: 15px;" onclick="openWhatsAppSupport()">
 💬 <strong>Contact Support on WhatsApp</strong>
 </div>
-<button class="btn-primary" style="background:#dc3545;" id="logout-btn">Logout</button>
+<button class="btn-primary" style="background:#dc3545; margin-top: 10px;" id="logout-btn">Logout</button>
 </div>
 </div>
 
-<!-- TAB: ADMIN PANEL -->
+<!-- TAB 5: ADMIN PANEL -->
 <div id="page-admin" class="tab-page">
 <div class="app-header" style="background: linear-gradient(180deg, #333 0%, #1a1a1a 100%);">
 <h1>Admin Panel</h1>
-<p>Manage Deposits, Withdrawals & Products</p>
+<p>Manage Deposits, Withdrawals & Add Products</p>
 </div>
 <div class="content-area" style="padding-top:20px;">
 <div class="product-card">
 <h3>Add New Product</h3>
 <div class="input-group" style="margin-top:10px;">
 <label>Product Title</label>
-<input type="text" id="adm-p-title" placeholder="e.g. Gold Coin">
+<input type="text" id="adm-p-title" placeholder="e.g. Diamond Ring">
 </div>
 <div class="input-group">
 <label>Price (₹)</label>
-<input type="number" id="adm-p-price" placeholder="700">
+<input type="number" id="adm-p-price" placeholder="1000">
 </div>
 <div class="input-group">
 <label>Daily Income (₹)</label>
-<input type="number" id="adm-p-daily" placeholder="61">
+<input type="number" id="adm-p-daily" placeholder="80">
 </div>
 <div class="input-group">
-<label>Cycle Days</label>
+<label>Cycle (Days)</label>
 <input type="number" id="adm-p-days" placeholder="30">
 </div>
 <button class="btn-primary" onclick="addNewProductAdmin()">Publish Product</button>
@@ -400,10 +348,9 @@ button.btn-primary { width: 100%; padding: 13px; background-color: #10a330; colo
 </div>
 </div>
 
-<!-- WHATSAPP FLOATING SUPPORT BUTTON -->
+<!-- WHATSAPP FLOATING BUTTON -->
 <a href="https://wa.me/918092703164?text=Hello%20Support,%20I%20need%20help%20with%20Tracker%20App" target="_blank" class="whatsapp-float">
-<span class="whatsapp-icon">💬</span>
-<span>Support</span>
+<span>💬 Support</span>
 </a>
 
 <!-- BOTTOM NAVIGATION BAR -->
@@ -414,7 +361,7 @@ button.btn-primary { width: 100%; padding: 13px; background-color: #10a330; colo
 </div>
 <div class="nav-item" onclick="switchTab('product')" id="nav-product">
 <span class="nav-icon">🪙</span>
-<span>Silver</span>
+<span>Products</span>
 </div>
 <div class="nav-item" onclick="switchTab('team')" id="nav-team">
 <span class="nav-icon">👥</span>
@@ -432,7 +379,7 @@ button.btn-primary { width: 100%; padding: 13px; background-color: #10a330; colo
 
 </div>
 
-<!-- RECHARGE MODAL WITH LIVE DYNAMIC QR & TIMER -->
+<!-- RECHARGE MODAL -->
 <div class="modal-overlay" id="recharge-modal">
 <div class="modal-card">
 <span class="close-modal" onclick="closeRechargeModal()">✕</span>
@@ -467,11 +414,10 @@ button.btn-primary { width: 100%; padding: 13px; background-color: #10a330; colo
 <button class="btn-primary" onclick="submitManualRecharge()">Submit Payment Proof</button>
 <button class="toggle-btn" onclick="backToAmountStep()" style="margin-top: 6px;">Change Amount</button>
 </div>
-
 </div>
 </div>
 
-<!-- WITHDRAW MODAL WITH UPI & BANK ACCOUNT OPTIONS -->
+<!-- WITHDRAW MODAL -->
 <div class="modal-overlay" id="withdraw-modal">
 <div class="modal-card">
 <span class="close-modal" onclick="closeWithdrawModal()">✕</span>
@@ -519,7 +465,7 @@ button.btn-primary { width: 100%; padding: 13px; background-color: #10a330; colo
 </div>
 </div>
 
-<!-- FIREBASE SYSTEM & LOGIC -->
+<!-- FIREBASE LOGIC -->
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut, RecaptchaVerifier, signInWithPhoneNumber } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
@@ -542,9 +488,17 @@ const ADMIN_EMAIL = "ravikishankumar20019777@okicici.com";
 
 let currentUser = null;
 let userData = {};
-let isLogin = true;
+let isLogin = false; // DEFAULT IS REGISTRATION (FALSE)
 let confirmationResult = null;
 let countdownInterval = null;
+let allProductsList = [];
+
+// AUTO-FILL REFERRAL CODE FROM URL LINK IF PRESENT
+const urlParams = new URLSearchParams(window.location.search);
+const refUrlParam = urlParams.get('ref');
+if(refUrlParam) {
+document.getElementById("reg-ref").value = refUrlParam.toUpperCase();
+}
 
 const authScreen = document.getElementById("auth-screen");
 const dashboardScreen = document.getElementById("dashboard-screen");
@@ -555,16 +509,18 @@ const nameGroup = document.getElementById("name-group");
 const phoneGroup = document.getElementById("phone-group");
 const refGroup = document.getElementById("ref-group");
 
+// TOGGLE BETWEEN REGISTER AND LOGIN
 toggleBtn.addEventListener("click", () => {
 isLogin = !isLogin;
 formTitle.innerText = isLogin ? "Login" : "Create Account";
-mainBtn.innerText = isLogin ? "Login" : "Create account";
+mainBtn.innerText = isLogin ? "Login" : "Create Account";
 toggleBtn.innerText = isLogin ? "Need an account? Register" : "Already have an account? Login";
 nameGroup.style.display = isLogin ? "none" : "block";
 phoneGroup.style.display = isLogin ? "none" : "block";
 refGroup.style.display = isLogin ? "none" : "block";
 });
 
+// MAIN SUBMIT ACTION
 mainBtn.addEventListener("click", () => {
 const email = document.getElementById("email").value.trim();
 const password = document.getElementById("password").value;
@@ -612,16 +568,14 @@ referrals: (inviter.referrals || 0) + 1
 }
 });
 
-// MOBILE OTP RESET LOGIC
+// OTP FORGOT PASSWORD
 window.showOTPResetView = () => {
 document.getElementById("standard-auth-box").style.display = "none";
 document.getElementById("otp-reset-box").style.display = "block";
 formTitle.innerText = "Reset via OTP";
 
 if (!window.recaptchaVerifier) {
-window.recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', {
-'size': 'invisible'
-});
+window.recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', { 'size': 'invisible' });
 }
 };
 
@@ -643,22 +597,17 @@ signInWithPhoneNumber(auth, phoneNum, appVerifier)
 confirmationResult = result;
 alert("OTP Sent to your Mobile Number!");
 document.getElementById("otp-input-group").style.display = "block";
-})
-.catch((error) => {
-alert("Failed to send OTP: " + error.message);
-});
+}).catch((error) => { alert("Failed to send OTP: " + error.message); });
 };
 
 window.verifyMobileOTP = () => {
 const code = document.getElementById("otp-code").value.trim();
 if (!code || code.length !== 6) return alert("Enter 6-digit OTP code");
 
-confirmationResult.confirm(code).then((result) => {
-alert("Mobile Verified Successfully! You are logged in.");
+confirmationResult.confirm(code).then(() => {
+alert("Mobile Verified Successfully!");
 hideOTPResetView();
-}).catch((error) => {
-alert("Invalid OTP Code!");
-});
+}).catch(() => { alert("Invalid OTP Code!"); });
 };
 
 window.triggerLogout = () => signOut(auth);
@@ -669,8 +618,8 @@ if (user) {
 currentUser = user;
 authScreen.style.display = "none";
 dashboardScreen.style.display = "block";
+switchTab('home'); // OPEN HOME DASHBOARD BY DEFAULT AFTER REGISTRATION / LOGIN
 
-// ADMIN BUTTON CHECK
 const adminBtn = document.getElementById("nav-admin-btn");
 if (user.email === ADMIN_EMAIL) {
 if(adminBtn) adminBtn.style.display = "block";
@@ -684,7 +633,9 @@ onSnapshot(doc(db, "users", user.uid), (docSnap) => {
 if (docSnap.exists()) {
 userData = docSnap.data();
 document.querySelectorAll(".user-display-name").forEach(e => e.innerText = userData.name || "User");
+document.getElementById("user-display-email").innerText = userData.email || user.email || "N/A";
 document.getElementById("user-display-phone").innerText = userData.phone || "N/A";
+
 document.getElementById("val-balance").innerText = "₹" + (userData.balance || 0).toFixed(2);
 document.getElementById("val-deposit").innerText = "₹" + (userData.deposit || 0);
 document.getElementById("val-withdraw").innerText = "₹" + (userData.withdraw || 0);
@@ -702,13 +653,15 @@ totalDailyRate += (userData.activeProducts[key].dailyRate || 0);
 }
 document.getElementById("val-daily-earning").innerText = "₹" + totalDailyRate;
 
-updateProductUI();
+renderProductsUI();
 }
 });
 
+loadProductsFromDB();
 loadRechargeStatus(user.uid);
 loadWithdrawalStatus(user.uid);
 loadTeamMembers(user.uid);
+loadClaimedIncomeHistory(user.uid);
 
 } else {
 authScreen.style.display = "block";
@@ -716,7 +669,147 @@ dashboardScreen.style.display = "none";
 }
 });
 
-// ADMIN PANEL: LOAD PENDING DEPOSITS
+// ADMIN PRODUCT ADDITION
+window.addNewProductAdmin = async () => {
+const title = document.getElementById("adm-p-title").value.trim();
+const price = parseFloat(document.getElementById("adm-p-price").value);
+const daily = parseFloat(document.getElementById("adm-p-daily").value);
+const days = parseInt(document.getElementById("adm-p-days").value);
+
+if(!title || !price || !daily || !days) return alert("Fill all product fields!");
+
+try {
+let pId = "prod_" + Date.now();
+await setDoc(doc(db, "products", pId), {
+id: pId,
+title: title,
+price: price,
+dailyIncome: daily,
+cycle: days,
+createdAt: Date.now()
+});
+alert("New Product Added Successfully!");
+document.getElementById("adm-p-title").value = "";
+document.getElementById("adm-p-price").value = "";
+document.getElementById("adm-p-daily").value = "";
+document.getElementById("adm-p-days").value = "";
+} catch(e) { alert(e.message); }
+};
+
+// LOAD DYNAMIC PRODUCTS
+function loadProductsFromDB() {
+onSnapshot(collection(db, "products"), (snapshot) => {
+let products = [];
+snapshot.forEach((docSnap) => {
+products.push(docSnap.data());
+});
+
+if(products.length === 0) {
+products = [
+{ id: "silver_chain", title: "🔗 Silver Chain", price: 700, dailyIncome: 61, cycle: 31 },
+{ id: "silver_coin_10g", title: "🪙 Silver Coin (10g)", price: 1200, dailyIncome: 90, cycle: 28 },
+{ id: "silver_bracelet", title: "📿 Silver Bracelet", price: 3100, dailyIncome: 210, cycle: 31 },
+{ id: "silver_coin_30g", title: "🪙 Silver Coin (30g)", price: 5100, dailyIncome: 310, cycle: 36 },
+{ id: "gold_coin_1g", title: "🪙 Gold Coin (1g)", price: 7999, dailyIncome: 410, cycle: 47 }
+];
+}
+
+allProductsList = products;
+renderProductsUI();
+});
+}
+
+function renderProductsUI() {
+const container = document.getElementById("dynamic-products-list");
+if(!container) return;
+
+let html = "";
+allProductsList.forEach(p => {
+let isActive = userData.activeProducts && userData.activeProducts[p.id] && userData.activeProducts[p.id].active;
+
+html += `
+<div class="product-card">
+<div class="product-head">
+<div class="product-title">${p.title}</div>
+<span class="badge ${isActive ? 'badge-active' : ''}">${isActive ? 'Active' : 'Not Active'}</span>
+</div>
+<div class="row-detail"><span>Price</span><span class="val">₹${p.price}</span></div>
+<div class="row-detail"><span>Cycle</span><span class="val">${p.cycle} Days</span></div>
+<div class="row-detail"><span>Daily Income</span><span class="val">₹${p.dailyIncome}</span></div>
+<div class="row-detail"><span>Total Return</span><span class="val">₹${p.dailyIncome * p.cycle}</span></div>
+${!isActive ? 
+`<button class="btn-action" onclick="buyProduct('${p.id}', ${p.price}, ${p.dailyIncome})">Buy (${p.title}) - ₹${p.price}</button>` :
+`<button class="btn-action" style="background:#ffb703;" onclick="claimDailyIncome('${p.id}', '${p.title}', ${p.dailyIncome})">Claim Daily Income (₹${p.dailyIncome})</button>`
+}
+</div>`;
+});
+
+container.innerHTML = html;
+}
+
+window.buyProduct = async (pKey, price, daily) => {
+if((userData.balance || 0) < price) return alert("Insufficient Balance! Recharge first.");
+try {
+let activeProds = userData.activeProducts || {};
+activeProds[pKey] = { active: true, dailyRate: daily, lastClaim: null };
+await updateDoc(doc(db, "users", currentUser.uid), {
+balance: userData.balance - price,
+activeProducts: activeProds
+});
+alert("Product Purchased Successfully!");
+} catch(e) { alert(e.message); }
+};
+
+window.claimDailyIncome = async (pKey, pTitle, daily) => {
+let activeProds = userData.activeProducts || {};
+let now = Date.now();
+let lastClaim = activeProds[pKey]?.lastClaim || 0;
+
+if(now - lastClaim < 86400000) {
+return alert("You can only claim daily income once every 24 hours!");
+}
+
+activeProds[pKey].lastClaim = now;
+await updateDoc(doc(db, "users", currentUser.uid), {
+balance: (userData.balance || 0) + daily,
+activeProducts: activeProds
+});
+
+await addDoc(collection(db, "claims"), {
+userId: currentUser.uid,
+productTitle: pTitle,
+amount: daily,
+timestamp: now
+});
+
+alert(`Claimed ₹${daily} for ${pTitle} successfully!`);
+};
+
+function loadClaimedIncomeHistory(uid) {
+const q = query(collection(db, "claims"), where("userId", "==", uid));
+onSnapshot(q, (snapshot) => {
+let html = "";
+let list = [];
+snapshot.forEach((docSnap) => list.push(docSnap.data()));
+
+list.sort((a,b) => b.timestamp - a.timestamp);
+
+list.forEach(item => {
+let d = new Date(item.timestamp).toLocaleString();
+html += `
+<div class="history-item">
+<div>
+<div><strong>${item.productTitle}</strong></div>
+<div style="font-size:11px; color:#777;">${d}</div>
+</div>
+<span style="color:#10a330; font-weight:bold;">+₹${item.amount}</span>
+</div>`;
+});
+
+document.getElementById("claimed-income-history-list").innerHTML = html || '<p style="font-size:12px; color:#888; text-align:center;">No income claimed yet.</p>';
+});
+}
+
 function loadAdminDeposits() {
 const container = document.getElementById("admin-deposits-list");
 if(!container) return;
@@ -724,7 +817,6 @@ if(!container) return;
 onSnapshot(collection(db, "recharges"), (snapshot) => {
 let html = "";
 let count = 0;
-
 snapshot.forEach((docSnap) => {
 let data = docSnap.data();
 if(data.status === "pending") {
@@ -735,71 +827,16 @@ html += `
 <div><strong>Amount:</strong> ₹${data.amount}</div>
 <div style="font-size:11px; color:#555;">UTR: ${data.paymentId}</div>
 <div style="display: flex; gap: 10px; margin-top: 5px; width: 100%;">
-<button onclick="updateDepositStatus('${docSnap.id}', '${data.userId}', ${data.amount})" style="flex:1; background:#28a745; color:white; border:none; padding:6px; border-radius:6px; cursor:pointer; font-weight:bold;">Approve & Add Balance</button>
+<button onclick="updateDepositStatus('${docSnap.id}', '${data.userId}', ${data.amount})" style="flex:1; background:#28a745; color:white; border:none; padding:6px; border-radius:6px; cursor:pointer; font-weight:bold;">Approve</button>
 <button onclick="updateDepositReject('${docSnap.id}')" style="flex:1; background:#dc3545; color:white; border:none; padding:6px; border-radius:6px; cursor:pointer; font-weight:bold;">Reject</button>
 </div>
-</div>
-`;
+</div>`;
 }
 });
-
-if(count === 0) {
-container.innerHTML = `<p style="font-size:12px; color:#888; text-align:center;">No pending deposits found.</p>`;
-} else {
-container.innerHTML = html;
-}
+container.innerHTML = count > 0 ? html : '<p style="font-size:12px; color:#888; text-align:center;">No pending deposits.</p>';
 });
 }
 
-// ADMIN PANEL: APPROVE DEPOSIT & ADD TO USER BALANCE
-window.updateDepositStatus = async (reqId, targetUserId, amount) => {
-try {
-// Update recharge request status
-await updateDoc(doc(db, "recharges", reqId), {
-status: "approved"
-});
-
-// Fetch user data and update balance & deposit
-const userDocRef = doc(db, "users", targetUserId);
-const userDocSnap = await getDoc(userDocRef);
-
-if(userDocSnap.exists()) {
-let uData = userDocSnap.data();
-let newBal = (uData.balance || 0) + amount;
-let newDep = (uData.deposit || 0) + amount;
-let cashbackBonus = (amount >= 700 && !uData.cashbackClaimed) ? 100 : 0;
-
-if(cashbackBonus > 0) {
-newBal += cashbackBonus;
-}
-
-await updateDoc(userDocRef, {
-balance: newBal,
-deposit: newDep,
-cashback: (uData.cashback || 0) + cashbackBonus,
-cashbackClaimed: true
-});
-}
-
-alert("Deposit approved successfully and balance added to user account!");
-} catch(e) {
-alert("Error approving deposit: " + e.message);
-}
-};
-
-// ADMIN PANEL: REJECT DEPOSIT
-window.updateDepositReject = async (reqId) => {
-try {
-await updateDoc(doc(db, "recharges", reqId), {
-status: "rejected"
-});
-alert("Deposit request rejected!");
-} catch(e) {
-alert("Error: " + e.message);
-}
-};
-
-// ADMIN PANEL: LOAD PENDING WITHDRAWALS
 function loadAdminWithdrawals() {
 const container = document.getElementById("admin-withdrawals-list");
 if(!container) return;
@@ -807,7 +844,6 @@ if(!container) return;
 onSnapshot(collection(db, "withdrawals"), (snapshot) => {
 let html = "";
 let count = 0;
-
 snapshot.forEach((docSnap) => {
 let data = docSnap.data();
 if(data.status === "pending") {
@@ -816,406 +852,124 @@ html += `
 <div class="history-item" style="flex-direction: column; align-items: flex-start; gap: 6px; padding: 12px 0;">
 <div><strong>User Email:</strong> ${data.userEmail || 'N/A'}</div>
 <div><strong>Amount:</strong> ₹${data.amount}</div>
-<div style="font-size:11px; color:#555;">${data.payoutDetails}</div>
+<div style="font-size:11px; color:#555;">Method: ${data.method} (${data.details})</div>
 <div style="display: flex; gap: 10px; margin-top: 5px; width: 100%;">
-<button onclick="updateWithdrawalStatus('${docSnap.id}', 'approved')" style="flex:1; background:#28a745; color:white; border:none; padding:6px; border-radius:6px; cursor:pointer; font-weight:bold;">Approve</button>
-<button onclick="updateWithdrawalStatus('${docSnap.id}', 'rejected')" style="flex:1; background:#dc3545; color:white; border:none; padding:6px; border-radius:6px; cursor:pointer; font-weight:bold;">Reject</button>
+<button onclick="updateWithdrawStatus('${docSnap.id}', '${data.userId}', ${data.amount}, 'approved')" style="flex:1; background:#28a745; color:white; border:none; padding:6px; border-radius:6px; cursor:pointer; font-weight:bold;">Approve</button>
+<button onclick="updateWithdrawStatus('${docSnap.id}', '${data.userId}', ${data.amount}, 'rejected')" style="flex:1; background:#dc3545; color:white; border:none; padding:6px; border-radius:6px; cursor:pointer; font-weight:bold;">Reject</button>
 </div>
-</div>
-`;
+</div>`;
 }
 });
-
-if(count === 0) {
-container.innerHTML = `<p style="font-size:12px; color:#888; text-align:center;">No pending withdrawals found.</p>`;
-} else {
-container.innerHTML = html;
-}
+container.innerHTML = count > 0 ? html : '<p style="font-size:12px; color:#888; text-align:center;">No pending withdrawals.</p>';
 });
 }
 
-// ADMIN PANEL: APPROVE OR REJECT WITHDRAWAL
-window.updateWithdrawalStatus = async (reqId, status) => {
+window.updateDepositStatus = async (rechargeId, userId, amount) => {
 try {
-await updateDoc(doc(db, "withdrawals", reqId), {
-status: status
+await updateDoc(doc(db, "recharges", rechargeId), { status: "approved" });
+const userRef = doc(db, "users", userId);
+const userSnap = await getDoc(userRef);
+
+if(userSnap.exists()){
+let uData = userSnap.data();
+let currentBal = uData.balance || 0;
+let currentDep = uData.deposit || 0;
+let cashback = uData.cashback || 0;
+let bonus = amount >= 700 ? 100 : 0;
+
+await updateDoc(userRef, {
+balance: currentBal + amount + bonus,
+deposit: currentDep + amount,
+cashback: cashback + bonus
 });
-alert(`Withdrawal request has been ${status}!`);
-} catch(e) {
-alert("Error updating status: " + e.message);
+alert("Deposit Approved successfully!");
 }
+} catch(e) { alert(e.message); }
 };
 
-// ADMIN PANEL: ADD NEW PRODUCT
-window.addNewProductAdmin = async () => {
-const title = document.getElementById("adm-p-title").value.trim();
-const price = parseFloat(document.getElementById("adm-p-price").value);
-const daily = parseFloat(document.getElementById("adm-p-daily").value);
-const days = parseInt(document.getElementById("adm-p-days").value);
-
-if(!title || !price || !daily || !days) {
-return alert("Sabhi fields bharein!");
-}
-
-const prodId = "prod_" + Date.now();
+window.updateDepositReject = async (rechargeId) => {
 try {
-await setDoc(doc(db, "products", prodId), {
-title: title,
-price: price,
-dailyIncome: daily,
-cycleDays: days
-});
-alert("Product successfully publish ho gaya!");
-document.getElementById("adm-p-title").value = "";
-document.getElementById("adm-p-price").value = "";
-document.getElementById("adm-p-daily").value = "";
-document.getElementById("adm-p-days").value = "";
-} catch(e) {
-alert("Error: " + e.message);
-}
+await updateDoc(doc(db, "recharges", rechargeId), { status: "rejected" });
+alert("Deposit Rejected!");
+} catch(e) { alert(e.message); }
 };
 
-function loadRechargeStatus(uid) {
-const q = query(collection(db, "recharges"), where("userId", "==", uid));
-onSnapshot(q, (snapshot) => {
-const listContainer = document.getElementById("recharge-history-list");
-if (!listContainer) return;
-
-if (snapshot.empty) {
-listContainer.innerHTML = `<p style="font-size:12px; color:#888; text-align:center;">No recharge history found.</p>`;
-return;
-}
-
-let html = "";
-snapshot.forEach((doc) => {
-const data = doc.data();
-let statusClass = "status-pending";
-if (data.status === "approved" || data.status === "success") statusClass = "status-approved";
-if (data.status === "rejected") statusClass = "status-rejected";
-
-html += `
-<div class="history-item">
-<div>
-<strong>₹${data.amount}</strong>
-<div style="font-size:11px; color:#777;">UTR: ${data.paymentId || 'N/A'}</div>
-</div>
-<span class="${statusClass}">${(data.status || 'pending').toUpperCase()}</span>
-</div>
-`;
-});
-listContainer.innerHTML = html;
-});
-}
-
-function loadWithdrawalStatus(uid) {
-const q = query(collection(db, "withdrawals"), where("userId", "==", uid));
-onSnapshot(q, (snapshot) => {
-const listContainer = document.getElementById("withdrawal-history-list");
-if (snapshot.empty) {
-listContainer.innerHTML = `<p style="font-size:12px; color:#888; text-align:center;">No withdrawal history found.</p>`;
-return;
-}
-
-let html = "";
-snapshot.forEach((doc) => {
-const data = doc.data();
-let statusClass = "status-pending";
-if (data.status === "approved" || data.status === "success") statusClass = "status-approved";
-if (data.status === "rejected") statusClass = "status-rejected";
-
-html += `
-<div class="history-item">
-<div>
-<strong>₹${data.amount}</strong>
-<div style="font-size:11px; color:#777; max-width:200px; word-break:break-all;">${data.payoutDetails || ''}</div>
-</div>
-<span class="${statusClass}">${(data.status || 'pending').toUpperCase()}</span>
-</div>
-`;
-});
-listContainer.innerHTML = html;
-});
-}
-
-function loadTeamMembers(uid) {
-getDoc(doc(db, "users", uid)).then((userDoc) => {
-if(!userDoc.exists()) return;
-const myRefCode = userDoc.data().referralCode;
-if(!myRefCode) return;
-
-const q = query(collection(db, "users"), where("referredBy", "==", myRefCode));
-onSnapshot(q, (snapshot) => {
-const teamContainer = document.getElementById("team-members-list");
-if (snapshot.empty) {
-teamContainer.innerHTML = `<p style="font-size:12px; color:#888; text-align:center;">No team members found yet.</p>`;
-return;
-}
-
-let html = "";
-snapshot.forEach((docSnap) => {
-const member = docSnap.data();
-let productsList = "None";
-
-if (member.activeProducts) {
-let activeNames = [];
-for(let pKey in member.activeProducts) {
-if(member.activeProducts[pKey].active) {
-activeNames.push(pKey.replace('_', ' ').toUpperCase());
-}
-}
-if(activeNames.length > 0) productsList = activeNames.join(", ");
-}
-
-html += `
-<div class="history-item" style="flex-direction: column; align-items: flex-start; gap: 4px; padding: 10px 0;">
-<div style="display: flex; width: 100%; justify-content: space-between;">
-<strong>👤 ${member.name || 'User'}</strong>
-<span style="color: #10a330; font-weight: bold;">Deposit: ₹${member.deposit || 0}</span>
-</div>
-<div style="font-size: 11px; color: #555;">Mobile: ${member.phone || 'N/A'}</div>
-<div style="font-size: 11px; color: #333;">Purchased Products: <b>${productsList}</b></div>
-</div>
-`;
-});
-teamContainer.innerHTML = html;
-});
-});
-}
-
-// PRODUCT UI & MANUAL CLAIM BUTTON STATE UPDATE
-function updateProductUI() {
-const prods = userData.activeProducts || {};
-const items = ['silver_chain', 'silver_coin_10g', 'silver_bracelet', 'silver_coin_30g'];
-const now = Date.now();
-const oneDayInMs = 24 * 60 * 60 * 1000;
-
-items.forEach(item => {
-const badge = document.getElementById(`badge-${item}`);
-const buyBtn = document.getElementById(`btn-buy-${item}`);
-const claimBtn = document.getElementById(`btn-claim-${item}`);
-
-if (prods[item] && prods[item].active) {
-if(badge) {
-badge.innerText = "Active";
-badge.className = "badge badge-active";
-}
-if(buyBtn) buyBtn.style.display = "none";
-
-if(claimBtn) {
-claimBtn.style.display = "block";
-let lastClaim = prods[item].lastClaimTime || prods[item].buyTime;
-let timePassed = now - lastClaim;
-
-if (timePassed >= oneDayInMs) {
-claimBtn.innerText = `Claim Daily Income (₹${prods[item].dailyRate})`;
-claimBtn.disabled = false;
-claimBtn.style.background = "#ffb703";
-claimBtn.style.cursor = "pointer";
-} else {
-let timeLeftMin = Math.ceil((oneDayInMs - timePassed) / (1000 * 60));
-let hours = Math.floor(timeLeftMin / 60);
-let mins = timeLeftMin % 60;
-claimBtn.innerText = `Next Claim in ${hours}h ${mins}m`;
-claimBtn.disabled = true;
-claimBtn.style.background = "#d1d5db";
-claimBtn.style.cursor = "not-allowed";
-}
-}
-} else {
-if(badge) {
-badge.innerText = "Not Active";
-badge.className = "badge";
-}
-if(buyBtn) {
-buyBtn.style.display = "block";
-buyBtn.disabled = false;
-buyBtn.style.background = "#10a330";
-}
-if(claimBtn) claimBtn.style.display = "none";
-}
-});
-}
-
-// MANUAL CLAIM DAILY INCOME FUNCTION
-window.claimDailyIncome = async (prodKey, dailyRate) => {
-let activeProducts = userData.activeProducts || {};
-if (!activeProducts[prodKey] || !activeProducts[prodKey].active) return;
-
-let prod = activeProducts[prodKey];
-let now = Date.now();
-let oneDayInMs = 24 * 60 * 60 * 1000;
-let lastClaim = prod.lastClaimTime || prod.buyTime;
-
-if ((now - lastClaim) >= oneDayInMs) {
-prod.lastClaimTime = now;
-let newBalance = (userData.balance || 0) + dailyRate;
-
+window.updateWithdrawStatus = async (wId, userId, amount, status) => {
 try {
-await updateDoc(doc(db, "users", currentUser.uid), {
-balance: newBalance,
-activeProducts: activeProducts
-});
-alert(`🎉 Successfully claimed ₹${dailyRate}! Balance mein add ho gaye hain.`);
-updateProductUI();
-} catch (e) {
-alert("Error claiming income: " + e.message);
+await updateDoc(doc(db, "withdrawals", wId), { status: status });
+if(status === "approved") {
+const userRef = doc(db, "users", userId);
+const userSnap = await getDoc(userRef);
+if(userSnap.exists()){
+let currentW = userSnap.data().withdraw || 0;
+await updateDoc(userRef, { withdraw: currentW + amount });
 }
-} else {
-alert("Abhi 24 ghante pure nahi hue hain!");
+} else if(status === "rejected") {
+const userRef = doc(db, "users", userId);
+const userSnap = await getDoc(userRef);
+if(userSnap.exists()){
+let currentBal = userSnap.data().balance || 0;
+await updateDoc(userRef, { balance: currentBal + amount });
 }
+}
+alert(`Withdrawal ${status}!`);
+} catch(e) { alert(e.message); }
 };
 
-// 3-LEVEL COMMISSION SYSTEM IN PRODUCT PURCHASE
-window.buyProduct = async (prodKey, price, dailyRate) => {
-const currentBalance = userData.balance || 0;
-if (currentBalance < price) {
-return alert(`Insufficient Balance! Please Recharge ₹${price - currentBalance} first.`);
-}
-
-if (confirm(`Kya aap yeh item ₹${price} mein kharidna chahte hain?`)) {
-try {
-let newBalance = currentBalance - price;
-let activeProducts = userData.activeProducts || {};
-
-activeProducts[prodKey] = {
-active: true,
-buyTime: Date.now(),
-lastClaimTime: Date.now(),
-dailyRate: dailyRate
+window.switchTab = (tabName) => {
+document.querySelectorAll(".tab-page").forEach(el => el.classList.remove("active-page"));
+document.querySelectorAll(".nav-item").forEach(el => el.classList.remove("active"));
+const targetPage = document.getElementById("page-" + tabName);
+const targetNav = document.getElementById("nav-" + tabName);
+if(targetPage) targetPage.classList.add("active-page");
+if(targetNav) targetNav.classList.add("active");
 };
 
-await updateDoc(doc(db, "users", currentUser.uid), {
-balance: newBalance,
-activeProducts: activeProducts
-});
+window.openRechargeModal = () => document.getElementById("recharge-modal").style.display = "flex";
+window.closeRechargeModal = () => document.getElementById("recharge-modal").style.display = "none";
+window.openWithdrawModal = () => document.getElementById("withdraw-modal").style.display = "flex";
+window.closeWithdrawModal = () => document.getElementById("withdraw-modal").style.display = "none";
 
-// --- 3-LEVEL COMMISSION DISTRIBUTION ---
-let currentReferrerCode = userData.referredBy;
+window.generateDynamicQR = () => {
+let amt = document.getElementById("deposit-amount").value;
+if(!amt || amt < 100) return alert("Enter valid amount (Min ₹100)");
 
-if (currentReferrerCode) {
-const q1 = query(collection(db, "users"), where("referralCode", "==", currentReferrerCode));
-const snap1 = await getDocs(q1);
+document.getElementById("qr-display-amt").innerText = amt;
+let upiUrl = `upi://pay?pa=ravikishankumar20019777@okicici&pn=TrackerApp&am=${amt}&cu=INR`;
+document.getElementById("dynamic-qr-img").src = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(upiUrl)}`;
 
-snap1.forEach(async (doc1) => {
-let user1Data = doc1.data();
-let comm1 = price * 0.10; // Level 1: 10%
-
-await updateDoc(doc(db, "users", doc1.id), {
-balance: (user1Data.balance || 0) + comm1,
-cashback: (user1Data.cashback || 0) + comm1
-});
-
-let level2ReferrerCode = user1Data.referredBy;
-if (level2ReferrerCode) {
-const q2 = query(collection(db, "users"), where("referralCode", "==", level2ReferrerCode));
-const snap2 = await getDocs(q2);
-
-snap2.forEach(async (doc2) => {
-let user2Data = doc2.data();
-let comm2 = price * 0.05; // Level 2: 5%
-
-await updateDoc(doc(db, "users", doc2.id), {
-balance: (user2Data.balance || 0) + comm2,
-cashback: (user2Data.cashback || 0) + comm2
-});
-
-let level3ReferrerCode = user2Data.referredBy;
-if (level3ReferrerCode) {
-const q3 = query(collection(db, "users"), where("referralCode", "==", level3ReferrerCode));
-const snap3 = await getDocs(q3);
-
-snap3.forEach(async (doc3) => {
-let user3Data = doc3.data();
-let comm3 = price * 0.01; // Level 3: 1%
-
-await updateDoc(doc(db, "users", doc3.id), {
-balance: (user3Data.balance || 0) + comm3,
-cashback: (user3Data.cashback || 0) + comm3
-});
-});
-}
-});
-}
-});
-}
-
-alert("Item successfully purchased and activated!");
-updateProductUI();
-} catch (error) {
-alert("Error: " + error.message);
-}
-}
-};
-
-window.openRechargeModal = () => {
-document.getElementById("recharge-modal").style.display = "flex";
-document.getElementById("step-amount-view").style.display = "block";
-document.getElementById("step-qr-view").style.display = "none";
-if(countdownInterval) clearInterval(countdownInterval);
-};
-
-window.closeRechargeModal = () => {
-document.getElementById("recharge-modal").style.display = "none";
-if(countdownInterval) clearInterval(countdownInterval);
+document.getElementById("step-amount-view").style.display = "none";
+document.getElementById("step-qr-view").style.display = "block";
+startTimer(300);
 };
 
 window.backToAmountStep = () => {
 document.getElementById("step-amount-view").style.display = "block";
 document.getElementById("step-qr-view").style.display = "none";
-if(countdownInterval) clearInterval(countdownInterval);
+clearInterval(countdownInterval);
 };
 
-// DYNAMIC QR CODE & TIMER GENERATOR
-window.generateDynamicQR = () => {
-const amtInput = document.getElementById("deposit-amount").value;
-const amt = parseFloat(amtInput);
-
-if (!amt || amt < 10) {
-return alert("Kripya sahi amount darj karein (Minimum ₹10)");
-}
-
-document.getElementById("qr-display-amt").innerText = amt;
-document.getElementById("step-amount-view").style.display = "none";
-document.getElementById("step-qr-view").style.display = "block";
-
-const upiID = "ravikishankumar20019777@okicici";
-const payeeName = "TrackerApp";
-const upiURI = `upi://pay?pa=${upiID}&pn=${encodeURIComponent(payeeName)}&am=${amt}&cu=INR`;
-
-const qrApiUrl = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=${encodeURIComponent(upiURI)}`;
-document.getElementById("dynamic-qr-img").src = qrApiUrl;
-
-startPaymentTimer(300);
-};
-
-function startPaymentTimer(duration) {
+function startTimer(duration) {
 let timer = duration, minutes, seconds;
-if(countdownInterval) clearInterval(countdownInterval);
-
-countdownInterval = setInterval(function () {
+clearInterval(countdownInterval);
+countdownInterval = setInterval(() => {
 minutes = parseInt(timer / 60, 10);
 seconds = parseInt(timer % 60, 10);
-
 minutes = minutes < 10 ? "0" + minutes : minutes;
 seconds = seconds < 10 ? "0" + seconds : seconds;
-
 document.getElementById("payment-timer").innerText = minutes + ":" + seconds;
-
 if (--timer < 0) {
 clearInterval(countdownInterval);
-alert("Payment session expired! Kripya dobara try karein.");
+alert("Payment Time Expired!");
 backToAmountStep();
 }
 }, 1000);
 }
 
 window.submitManualRecharge = async () => {
-const amt = parseFloat(document.getElementById("deposit-amount").value);
-const utr = document.getElementById("utr-number").value.trim();
-
-if (!utr || utr.length < 6) {
-return alert("Kripya valid 12-digit UTR / Transaction ID darj karein.");
-}
+let utr = document.getElementById("utr-number").value.trim();
+let amt = parseFloat(document.getElementById("deposit-amount").value);
+if(!utr || utr.length < 8) return alert("Enter valid UTR / Transaction ID");
 
 try {
 await addDoc(collection(db, "recharges"), {
@@ -1224,120 +978,106 @@ userEmail: currentUser.email,
 amount: amt,
 paymentId: utr,
 status: "pending",
-timestamp: new Date()
+createdAt: Date.now()
 });
-
-alert("Recharge request successfully submit ho gayi hai! Admin verification ke baad balance update kar diya jayega.");
+alert("Recharge proof submitted! Awaiting Admin Approval.");
 closeRechargeModal();
-document.getElementById("deposit-amount").value = "";
-document.getElementById("utr-number").value = "";
-if(countdownInterval) clearInterval(countdownInterval);
-} catch (e) {
-alert("Error: " + e.message);
-}
+backToAmountStep();
+} catch(e) { alert(e.message); }
 };
 
-// WITHDRAWAL MODAL & PAYOUT LOGIC
 window.togglePayoutFields = () => {
-const method = document.getElementById("payout-method").value;
-const upiBox = document.getElementById("upi-field-box");
-const bankBox = document.getElementById("bank-field-box");
-
-if (method === "bank") {
-upiBox.style.display = "none";
-bankBox.style.display = "block";
-} else {
-upiBox.style.display = "block";
-bankBox.style.display = "none";
-}
-};
-
-window.openWithdrawModal = () => {
-document.getElementById("withdraw-modal").style.display = "flex";
-document.getElementById("withdraw-amt").value = "";
-document.getElementById("withdraw-upi").value = "";
-document.getElementById("bank-acc-no").value = "";
-document.getElementById("bank-acc-confirm").value = "";
-document.getElementById("bank-ifsc").value = "";
-document.getElementById("bank-holder-name").value = "";
-document.getElementById("payout-method").value = "upi";
-togglePayoutFields();
-};
-
-window.closeWithdrawModal = () => {
-document.getElementById("withdraw-modal").style.display = "none";
+let method = document.getElementById("payout-method").value;
+document.getElementById("upi-field-box").style.display = method === "upi" ? "block" : "none";
+document.getElementById("bank-field-box").style.display = method === "bank" ? "block" : "none";
 };
 
 window.submitWithdrawRequest = async () => {
-const amt = parseFloat(document.getElementById("withdraw-amt").value);
-const method = document.getElementById("payout-method").value;
+let amt = parseFloat(document.getElementById("withdraw-amt").value);
+if(!amt || amt <= 0) return alert("Enter valid amount");
+if(amt > (userData.balance || 0)) return alert("Insufficient Balance!");
 
-if (!amt || amt <= 0) return alert("Kripya valid withdrawal amount darj karein.");
-if (amt > (userData.balance || 0)) return alert("Aapka balance kam hai (Insufficient Balance)!");
+let method = document.getElementById("payout-method").value;
+let details = "";
 
-let payoutDetailsStr = "";
-
-if (method === "upi") {
-const upi = document.getElementById("withdraw-upi").value.trim();
-if (!upi) return alert("Kripya apni valid UPI ID darj karein.");
-payoutDetailsStr = `UPI: ${upi}`;
+if(method === "upi") {
+details = document.getElementById("withdraw-upi").value.trim();
+if(!details) return alert("Enter UPI ID");
 } else {
-const accNo = document.getElementById("bank-acc-no").value.trim();
-const accConfirm = document.getElementById("bank-acc-confirm").value.trim();
-const ifsc = document.getElementById("bank-ifsc").value.trim().toUpperCase();
-const holderName = document.getElementById("bank-holder-name").value.trim();
-
-if (!accNo || accNo.length < 8) return alert("Kripya valid Bank Account Number darj karein.");
-if (accNo !== accConfirm) return alert("Account numbers match nahi kar rahe hain!");
-if (!ifsc || ifsc.length < 6) return alert("Kripya valid IFSC Code darj karein.");
-if (!holderName) return alert("Kripya account holder ka naam darj karein.");
-
-payoutDetailsStr = `Bank A/C: ${accNo} | IFSC: ${ifsc} | Name: ${holderName}`;
+let acc = document.getElementById("bank-acc-no").value.trim();
+let accConf = document.getElementById("bank-acc-confirm").value.trim();
+let ifsc = document.getElementById("bank-ifsc").value.trim();
+let name = document.getElementById("bank-holder-name").value.trim();
+if(!acc || acc !== accConf || !ifsc || !name) return alert("Fill all bank details correctly");
+details = `Acc: ${acc}, IFSC: ${ifsc}, Name: ${name}`;
 }
 
 try {
-let newBalance = userData.balance - amt;
-let newWithdrawTotal = (userData.withdraw || 0) + amt;
-
-await updateDoc(doc(db, "users", currentUser.uid), {
-balance: newBalance,
-withdraw: newWithdrawTotal
-});
-
 await addDoc(collection(db, "withdrawals"), {
 userId: currentUser.uid,
 userEmail: currentUser.email,
 amount: amt,
-payoutDetails: payoutDetailsStr,
+method: method,
+details: details,
 status: "pending",
-timestamp: new Date()
+createdAt: Date.now()
 });
 
-alert("Withdrawal request successfully submit ho gayi hai!");
+await updateDoc(doc(db, "users", currentUser.uid), {
+balance: userData.balance - amt
+});
+
+alert("Withdrawal request submitted successfully!");
 closeWithdrawModal();
-} catch (e) {
-alert("Error: " + e.message);
-}
+} catch(e) { alert(e.message); }
 };
 
+function loadRechargeStatus(uid) {
+const q = query(collection(db, "recharges"), where("userId", "==", uid));
+onSnapshot(q, (snapshot) => {
+let html = "";
+snapshot.forEach((docSnap) => {
+let d = docSnap.data();
+html += `<div class="history-item"><span>₹${d.amount} (UTR: ${d.paymentId})</span><span class="status-${d.status}">${d.status.toUpperCase()}</span></div>`;
+});
+document.getElementById("recharge-history-list").innerHTML = html || '<p style="font-size:12px; color:#888; text-align:center;">No recharge history found.</p>';
+});
+}
+
+function loadWithdrawalStatus(uid) {
+const q = query(collection(db, "withdrawals"), where("userId", "==", uid));
+onSnapshot(q, (snapshot) => {
+let html = "";
+snapshot.forEach((docSnap) => {
+let d = docSnap.data();
+html += `<div class="history-item"><span>₹${d.amount}</span><span class="status-${d.status}">${d.status.toUpperCase()}</span></div>`;
+});
+document.getElementById("withdrawal-history-list").innerHTML = html || '<p style="font-size:12px; color:#888; text-align:center;">No withdrawal history found.</p>';
+});
+}
+
+function loadTeamMembers(uid) {
+if(!userData.referralCode) return;
+const q = query(collection(db, "users"), where("referredBy", "==", userData.referralCode));
+onSnapshot(q, (snapshot) => {
+let html = "";
+snapshot.forEach((docSnap) => {
+let d = docSnap.data();
+html += `<div class="history-item"><span>${d.name || d.email}</span><span style="color:#10a330; font-weight:bold;">Joined</span></div>`;
+});
+document.getElementById("team-members-list").innerHTML = html || '<p style="font-size:12px; color:#888; text-align:center;">No team members found.</p>';
+});
+}
+
 window.copyReferralLink = () => {
-const code = userData.referralCode || "";
-const link = window.location.origin + window.location.pathname + "?ref=" + code;
-navigator.clipboard.writeText(link);
-alert("Referral Link Copied: " + link);
+let code = document.getElementById("user-ref-code").innerText;
+navigator.clipboard.writeText(window.location.href.split('?')[0] + "?ref=" + code);
+alert("Referral link copied to clipboard!");
 };
 
 window.openWhatsAppSupport = () => {
 window.open("https://wa.me/918092703164?text=Hello%20Support,%20I%20need%20help%20with%20Tracker%20App", "_blank");
 };
-
-window.switchTab = function(tab) {
-document.querySelectorAll(".tab-page").forEach(p => p.classList.remove("active-page"));
-document.querySelectorAll(".nav-item").forEach(n => n.classList.remove("active"));
-document.getElementById("page-" + tab).classList.add("active-page");
-document.getElementById("nav-" + tab).classList.add("active");
-};
 </script>
-
 </body>
 </html>
