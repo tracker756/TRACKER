@@ -241,8 +241,8 @@ button.btn-primary { width: 100%; padding: 13px; background-color: #10a330; colo
 </div>
 </div>
 
-<!-- TAB 3: REFER & EARN DASHBOARD (CENTER ALIGNED) -->
-<div id="page-team" class="tab-page centered-tab">
+<!-- TAB: REFERRAL & TEAM -->
+<div id="page-team" class="tab-page">
 <div class="app-header">
 <h1>Invite & Earn</h1>
 <p>Share with friends & track their details</p>
@@ -262,21 +262,40 @@ button.btn-primary { width: 100%; padding: 13px; background-color: #10a330; colo
 
 <div class="section-title">Commission Rates</div>
 <div class="stats-grid" style="grid-template-columns: 1fr 1fr 1fr;">
-<div class="stat-card" style="padding: 12px; text-align: center;">
+<div class="stat-card" style="padding: 12px;">
 <div class="stat-label">Level 1 (Direct)</div>
 <div class="stat-value" style="color:#28a745; font-size:16px;">10%</div>
 </div>
-<div class="stat-card" style="padding: 12px; text-align: center;">
+<div class="stat-card" style="padding: 12px;">
 <div class="stat-label">Level 2 (Indirect)</div>
 <div class="stat-value" style="color:#10a330; font-size:16px;">5%</div>
 </div>
-<div class="stat-card" style="padding: 12px; text-align: center;">
+<div class="stat-card" style="padding: 12px;">
 <div class="stat-label">Level 3</div>
 <div class="stat-value" style="color:#ffb703; font-size:16px;">1%</div>
 </div>
 </div>
 </div>
 </div>
+
+<!-- TAB: USER PROFILE -->
+<div id="page-user" class="tab-page">
+<div class="app-header">
+<h1>User Profile</h1>
+<p>Account details and controls</p>
+</div>
+<div class="content-area" style="padding-top:30px;">
+<div class="product-card">
+<div class="row-detail"><span>Name:</span><span class="val user-display-name">User</span></div>
+<div class="row-detail"><span>Mobile:</span><span class="val" id="user-display-phone">N/A</span></div>
+</div>
+<div class="product-card" style="text-align: center; cursor: pointer;" onclick="openWhatsAppSupport()">
+💬 <strong>Contact Support on WhatsApp</strong>
+</div>
+<button class="btn-primary" style="background:#dc3545;" id="logout-btn">Logout</button>
+</div>
+</div>
+
 
 <!-- TAB 4: USER PROFILE DASHBOARD (CENTER ALIGNED WITH EMAIL & STATEMENT) -->
 <div id="page-user" class="tab-page centered-tab">
