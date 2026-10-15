@@ -3,361 +3,190 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Tracker App & Color Trading</title>
+<title>Tracker App - Color Trading Game</title>
 <style>
 * { box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; margin: 0; padding: 0; }
 body { background-color: #f7faf7; display: flex; justify-content: center; align-items: flex-start; min-height: 100vh; padding-bottom: 75px; }
 
-/* AUTHENTICATION STYLES */
+/* AUTHENTICATION & APP STYLES */
 .auth-container { background: white; padding: 30px 24px; border-radius: 20px; box-shadow: 0 8px 30px rgba(0,0,0,0.06); width: 90%; max-width: 380px; text-align: center; margin-top: 40px; }
 .auth-container h2 { font-size: 22px; color: #10a330; margin-bottom: 6px; }
-.auth-container p { color: #666; font-size: 13px; margin-bottom: 20px; }
 .input-group { text-align: left; margin-bottom: 12px; }
 .input-group label { font-size: 12px; font-weight: 600; color: #444; margin-bottom: 4px; display: block; }
 input, select { width: 100%; padding: 12px 14px; border: 1px solid #e1e4e8; border-radius: 10px; font-size: 14px; outline: none; background: #fafafa; }
-input:focus, select:focus { border-color: #10a330; }
 button.btn-primary { width: 100%; padding: 13px; background-color: #10a330; color: white; border: none; border-radius: 10px; font-size: 15px; font-weight: 600; cursor: pointer; margin-top: 10px; }
 .toggle-btn { background: none; color: #10a330; border: none; margin-top: 12px; font-size: 13px; cursor: pointer; text-decoration: underline; display: inline-block; }
-.forgot-btn { background: none; color: #666; border: none; margin-top: 8px; font-size: 12px; cursor: pointer; text-decoration: underline; display: block; width: 100%; }
 
-/* APP DASHBOARD STYLES */
 .app-container { display: none; width: 100%; max-width: 440px; margin: 0 auto; }
 .tab-page { display: none; }
 .tab-page.active-page { display: block; }
 
-.centered-tab { text-align: center; }
-.centered-tab .input-group { text-align: left; }
-.centered-tab .user-profile-bar { justify-content: center; text-align: center; flex-direction: column; gap: 8px; }
-.centered-tab .user-profile-left { flex-direction: column; justify-content: center; align-items: center; }
-
-.app-header { background: linear-gradient(180deg, #12b836 0%, #10a330 100%); color: white; padding: 25px 20px 35px 20px; border-bottom-left-radius: 20px; border-bottom-right-radius: 20px; }
-.user-profile-bar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 15px; }
-.user-profile-left { display: flex; align-items: center; gap: 12px; }
-.avatar-icon { width: 50px; height: 50px; background: #ffb703; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 26px; color: white; margin: 0 auto; }
+.app-header { background: linear-gradient(180deg, #e74c3c 0%, #c0392b 100%); color: white; padding: 20px; border-bottom-left-radius: 20px; border-bottom-right-radius: 20px; text-align: center; }
 .app-header h1 { font-size: 20px; font-weight: 700; }
-.app-header p { font-size: 12px; opacity: 0.9; }
-.logout-header-btn { background: rgba(255,255,255,0.2); border: none; color: white; padding: 6px 14px; border-radius: 12px; font-size: 12px; cursor: pointer; }
 
-.content-area { padding: 0 16px; margin-top: -20px; }
-.section-title { font-size: 15px; font-weight: 700; color: #1a1a1a; margin: 20px 0 12px 0; }
-.banner-cashback { background: #e8867c; color: white; border-radius: 14px; padding: 14px; margin-bottom: 15px; font-size: 13px; text-align: center; font-weight: bold; box-shadow: 0 4px 10px rgba(232, 134, 124, 0.2); }
+.content-area { padding: 16px; }
+.section-title { font-size: 15px; font-weight: 700; color: #1a1a1a; margin: 15px 0 10px 0; }
 
-.stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-.stat-card { background: white; padding: 16px; border-radius: 14px; box-shadow: 0 2px 8px rgba(0,0,0,0.03); }
-.stat-label { font-size: 12px; color: #666; margin-bottom: 6px; }
-.stat-value { font-size: 18px; font-weight: 700; color: #10a330; }
+/* BIGBULLY / WIN GO STYLE GAME PANEL */
+.game-card { background: white; border-radius: 16px; padding: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.03); margin-bottom: 15px; }
+.game-top-bar { background: #fee; border-radius: 12px; padding: 12px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; border: 1px solid #fadbd8; }
+.game-timer-box { text-align: right; }
+.game-timer-title { font-size: 11px; color: #c0392b; font-weight: bold; }
+.game-timer-val { font-size: 18px; font-weight: bold; color: #c0392b; }
+.period-text { font-size: 13px; font-weight: bold; color: #333; margin-top: 2px; }
 
-.actions-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-.action-card { background: white; padding: 16px 10px; border-radius: 14px; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.03); cursor: pointer; }
-.action-icon { font-size: 22px; margin-bottom: 6px; }
-.action-title { font-size: 12px; font-weight: 600; color: #333; }
+/* COLOR BUTTONS */
+.color-btn-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-bottom: 15px; }
+.c-btn { padding: 10px; border: none; border-radius: 8px; color: white; font-weight: bold; font-size: 13px; cursor: pointer; }
+.bg-green { background-color: #27ae60; }
+.bg-violet { background-color: #9b59b6; }
+.bg-red { background-color: #e74c3c; }
 
-.product-card { background: white; border-radius: 16px; padding: 18px; margin-bottom: 15px; box-shadow: 0 2px 8px rgba(0,0,0,0.03); }
-.product-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
-.product-title { font-size: 16px; font-weight: 700; color: #1a1a1a; }
-.badge { background: #eaf8ed; color: #10a330; font-size: 11px; padding: 4px 10px; border-radius: 20px; font-weight: 600; }
-.badge-active { background: #e6f8e6; color: #28a745; }
-.row-detail { display: flex; justify-content: space-between; margin: 8px 0; font-size: 13px; color: #555; }
-.row-detail span.val { font-weight: 700; color: #1a1a1a; }
-.btn-action { width: 100%; padding: 11px; background: #10a330; color: white; border: none; border-radius: 10px; font-weight: 600; margin-top: 10px; cursor: pointer; }
+/* NUMBER BALLS GRID (0-9) */
+.number-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; margin-bottom: 15px; }
+.num-ball { width: 45px; height: 45px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; color: white; font-size: 16px; cursor: pointer; margin: 0 auto; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
 
-.history-card { background: white; border-radius: 14px; padding: 14px; margin-top: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.03); text-align: left; }
-.history-item { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #f0f0f0; padding: 8px 0; font-size: 13px; }
-.history-item:last-child { border-bottom: none; }
-.status-pending { color: #f39c12; font-weight: bold; background: #fffdf0; padding: 2px 8px; border-radius: 6px; font-size: 11px; }
-.status-approved { color: #27ae60; font-weight: bold; background: #f0fff4; padding: 2px 8px; border-radius: 6px; font-size: 11px; }
-.status-rejected { color: #e74c3c; font-weight: bold; background: #fff0f0; padding: 2px 8px; border-radius: 6px; font-size: 11px; }
+/* MULTIPLIER BUTTONS (X1 - X100) */
+.multiplier-grid { display: flex; justify-content: space-between; gap: 4px; margin-bottom: 15px; overflow-x: auto; padding-bottom: 5px; }
+.m-btn { background: #f0f0f0; border: 1px solid #ddd; padding: 6px 10px; border-radius: 6px; font-size: 11px; font-weight: bold; cursor: pointer; color: #333; }
+.m-btn.active-mult { background: #e74c3c; color: white; border-color: #e74c3c; }
 
-.ref-box { background: white; padding: 20px; border-radius: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.03); text-align: center; margin-top: 15px; }
-.ref-code { font-size: 20px; font-weight: bold; letter-spacing: 2px; color: #10a330; background: #eaf8ed; padding: 10px; border-radius: 10px; margin: 10px 0; display: inline-block; width: 100%; }
+/* BIG / SMALL BUTTONS */
+.big-small-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px; }
+.bs-btn { padding: 12px; border: none; border-radius: 10px; color: white; font-size: 15px; font-weight: bold; cursor: pointer; }
+.bg-big { background-color: #f39c12; }
+.bg-small { background-color: #3498db; }
 
-.modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 200; justify-content: center; align-items: center; }
-.modal-card { background: white; border-radius: 16px; padding: 20px; width: 90%; max-width: 380px; text-align: center; position: relative; max-height: 90vh; overflow-y: auto; }
-.close-modal { position: absolute; right: 15px; top: 15px; font-size: 18px; cursor: pointer; font-weight: bold; color: #888; }
+/* HISTORY TABLE */
+.history-card { background: white; border-radius: 14px; padding: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.03); }
+.history-row { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #f0f0f0; padding: 8px 0; font-size: 12px; }
+.history-row:last-child { border-bottom: none; }
 
-.bottom-nav { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 440px; background: white; border-top: 1px solid #eee; display: flex; justify-content: space-around; padding: 10px 0; box-shadow: 0 -2px 10px rgba(0,0,0,0.03); z-index: 100; }
-.nav-item { text-align: center; color: #8e8e93; font-size: 11px; cursor: pointer; width: 16.6%; }
-.nav-item.active { color: #10a330; font-weight: 600; }
+/* BOTTOM NAV */
+.bottom-nav { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 440px; background: white; border-top: 1px solid #eee; display: flex; justify-content: space-around; padding: 10px 0; z-index: 100; }
+.nav-item { text-align: center; color: #8e8e93; font-size: 11px; cursor: pointer; width: 25%; }
+.nav-item.active { color: #e74c3c; font-weight: 600; }
 .nav-icon { font-size: 18px; display: block; margin-bottom: 2px; }
 
-.whatsapp-float { position: fixed; bottom: 75px; right: 20px; background-color: #25d366; color: white; border-radius: 50px; padding: 10px 18px; display: flex; align-items: center; gap: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); text-decoration: none; font-weight: 600; font-size: 13px; z-index: 150; cursor: pointer; }
+/* MODAL */
+.modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 200; justify-content: center; align-items: center; }
+.modal-card { background: white; border-radius: 16px; padding: 20px; width: 90%; max-width: 380px; text-align: center; position: relative; }
 </style>
 </head>
 <body>
 
-<!-- FIRST SCREEN: REGISTRATION / LOGIN -->
+<!-- AUTH SCREEN -->
 <div class="auth-container" id="auth-screen">
-<h2 id="form-title">Create Account</h2>
-<p id="form-subtitle">Tracker App & Color Trading</p>
-
-<div id="standard-auth-box">
-<div class="input-group" id="name-group">
-<label>Full Name</label>
-<input type="text" id="reg-name" placeholder="Enter Full Name">
+<h2>Color Game Login</h2>
+<p style="font-size:12px; color:#666; margin-bottom:15px;">Sign in to start trading</p>
+<div class="input-group"><label>Email</label><input type="email" id="email" placeholder="user@gmail.com"></div>
+<div class="input-group"><label>Password</label><input type="password" id="password" placeholder="••••••••"></div>
+<button class="btn-primary" id="main-btn" style="background:#e74c3c;">Login / Register</button>
 </div>
 
-<div class="input-group" id="phone-group">
-<label>Mobile Number</label>
-<input type="tel" id="reg-phone" placeholder="e.g. 9876543210">
-</div>
-
-<div class="input-group">
-<label>Email Address</label>
-<input type="email" id="email" placeholder="user@gmail.com" required>
-</div>
-
-<div class="input-group" id="password-group">
-<label>Password</label>
-<input type="password" id="password" placeholder="••••••••" required>
-</div>
-
-<div class="input-group" id="ref-group">
-<label>Referral Code (Optional)</label>
-<input type="text" id="reg-ref" placeholder="Enter Code">
-</div>
-
-<button class="btn-primary" id="main-btn">Create Account</button>
-<button class="toggle-btn" id="toggle-btn">Already have an account? Login</button>
-<button class="forgot-btn" id="forgot-btn" onclick="showOTPResetView()">Forgot Password via Mobile OTP?</button>
-</div>
-
-<!-- OTP FORGOT PASSWORD BOX -->
-<div id="otp-reset-box" style="display: none;">
-<div class="input-group">
-<label>Registered Mobile Number</label>
-<input type="tel" id="otp-phone" placeholder="e.g. 9876543210">
-</div>
-<div id="recaptcha-container"></div>
-<button class="btn-primary" id="send-otp-btn" onclick="sendMobileOTP()">Send OTP</button>
-
-<div class="input-group" id="otp-input-group" style="display: none; margin-top: 12px;">
-<label>Enter 6-Digit OTP</label>
-<input type="number" id="otp-code" placeholder="123456">
-<button class="btn-primary" style="margin-top:8px; background:#1a1a1a;" onclick="verifyMobileOTP()">Verify & Login</button>
-</div>
-<button class="toggle-btn" onclick="hideOTPResetView()">Back to Account Screen</button>
-</div>
-</div>
-
-<!-- DASHBOARD MAIN CONTAINER -->
+<!-- MAIN DASHBOARD -->
 <div class="app-container" id="dashboard-screen">
 
-<!-- TAB 1: HOME -->
-<div id="page-home" class="tab-page active-page">
+<!-- TAB: COLOR GAME (BigBully Style Menu) -->
+<div id="page-color-game" class="tab-page active-page">
 <div class="app-header">
-<div class="user-profile-bar">
-<div class="user-profile-left">
-<div class="avatar-icon">👤</div>
+<h1>BigBully Win Go</h1>
+<p style="font-size:11px; opacity:0.9;">Win Go 1Min</p>
+</div>
+
+<div class="content-area">
+<!-- GAME TOP BANNER (Timer & Period ID) -->
+<div class="game-card" style="padding: 12px;">
+<div class="game-top-bar">
 <div>
-<h1 class="user-display-name">User</h1>
-<p>VIP-0 Member</p>
+<div style="font-size: 11px; color: #666;">Recent Results</div>
+<div style="display: flex; gap: 4px; margin-top: 4px;">
+<span style="background:#e74c3c; color:white; border-radius:50%; width:20px; height:20px; display:inline-flex; align-items:center; justify-content:center; font-size:10px; font-weight:bold;">4</span>
+<span style="background:#27ae60; color:white; border-radius:50%; width:20px; height:20px; display:inline-flex; align-items:center; justify-content:center; font-size:10px; font-weight:bold;">1</span>
+<span style="background:#e74c3c; color:white; border-radius:50%; width:20px; height:20px; display:inline-flex; align-items:center; justify-content:center; font-size:10px; font-weight:bold;">8</span>
 </div>
 </div>
-<button class="logout-header-btn" onclick="triggerLogout()">Logout</button>
-</div>
-</div>
-
-<div class="content-area">
-<div class="banner-cashback">
-🎁 Offer: हमारे बैंक का सर्वर अब पूरी तरह से ठीक हो गया है और सभी सेवाएं सामान्य रूप से शुरू कर दी गई हैं।
-</div>
-
-<div class="section-title">Dashboard Overview</div>
-<div class="stats-grid">
-<div class="stat-card"><div class="stat-label">Total Balance</div><div class="stat-value" id="val-balance">₹0.00</div></div>
-<div class="stat-card"><div class="stat-label">Total Withdraw</div><div class="stat-value" id="val-withdraw">₹0.00</div></div>
-<div class="stat-card"><div class="stat-label">Daily Earning</div><div class="stat-value" id="val-daily-earning">₹0.00</div></div>
-<div class="stat-card"><div class="stat-label">Total Cashback</div><div class="stat-value" id="val-cashback">₹0.00</div></div>
-<div class="stat-card"><div class="stat-label">Referrals</div><div class="stat-value" id="val-ref">0</div></div>
-<div class="stat-card"><div class="stat-label">Total Deposit</div><div class="stat-value" id="val-deposit">₹0.00</div></div>
-</div>
-
-<div class="section-title">Recharge History & Status</div>
-<div class="history-card" id="recharge-history-list"><p style="font-size:12px; color:#888; text-align:center;">No recharge history found.</p></div>
-
-<div class="section-title">Withdrawal Requests Status</div>
-<div class="history-card" id="withdrawal-history-list"><p style="font-size:12px; color:#888; text-align:center;">No withdrawal history found.</p></div>
-
-<div class="section-title">Quick Actions</div>
-<div class="actions-grid">
-<div class="action-card" onclick="openRechargeModal()"><div class="action-icon">💳</div><div class="action-title">Recharge</div></div>
-<div class="action-card" onclick="openWithdrawModal()"><div class="action-icon">💰</div><div class="action-title">Withdraw</div></div>
-<div class="action-card" onclick="switchTab('product')"><div class="action-icon">🪙</div><div class="action-title">Silver Items</div></div>
-<div class="action-card" onclick="switchTab('color-game')"><div class="action-icon">🎮</div><div class="action-title">Color Game</div></div>
-</div>
+<div class="game-timer-box">
+<div class="game-timer-title">Time remaining</div>
+<div class="game-timer-val" id="game-timer">00:30</div>
+<div class="period-text" id="game-period-id">202610160963</div>
 </div>
 </div>
 
-<!-- TAB 2: PRODUCTS -->
-<div id="page-product" class="tab-page">
-<div class="app-header"><h1>Products Collection</h1><p>Buy items & claim daily income</p></div>
-<div class="content-area">
-<div style="height: 25px;"></div>
-<div id="dynamic-products-list"><p style="font-size:12px; color:#888; text-align:center;">Loading products...</p></div>
+<!-- 1. COLOR BUTTONS -->
+<div class="color-btn-grid">
+<button class="c-btn bg-green" onclick="openBetModal('Green', 'color')">Green</button>
+<button class="c-btn bg-violet" onclick="openBetModal('Violet', 'color')">Violet</button>
+<button class="c-btn bg-red" onclick="openBetModal('Red', 'color')">Red</button>
+</div>
+
+<!-- 2. NUMBER BALLS (0 to 9) -->
+<div class="number-grid">
+<div class="num-ball bg-violet" onclick="openBetModal('0', 'number')">0</div>
+<div class="num-ball bg-green" onclick="openBetModal('1', 'number')">1</div>
+<div class="num-ball bg-red" onclick="openBetModal('2', 'number')">2</div>
+<div class="num-ball bg-green" onclick="openBetModal('3', 'number')">3</div>
+<div class="num-ball bg-red" onclick="openBetModal('4', 'number')">4</div>
+<div class="num-ball bg-violet" onclick="openBetModal('5', 'number')">5</div>
+<div class="num-ball bg-red" onclick="openBetModal('6', 'number')">6</div>
+<div class="num-ball bg-green" onclick="openBetModal('7', 'number')">7</div>
+<div class="num-ball bg-red" onclick="openBetModal('8', 'number')">8</div>
+<div class="num-ball bg-green" onclick="openBetModal('9', 'number')">9</div>
+</div>
+
+<!-- 3. MULTIPLIER BUTTONS (X1 - X100) -->
+<div class="multiplier-grid">
+<button class="m-btn active-mult" onclick="setMultiplier(1, this)">X1</button>
+<button class="m-btn" onclick="setMultiplier(5, this)">X5</button>
+<button class="m-btn" onclick="setMultiplier(10, this)">X10</button>
+<button class="m-btn" onclick="setMultiplier(20, this)">X20</button>
+<button class="m-btn" onclick="setMultiplier(50, this)">X50</button>
+<button class="m-btn" onclick="setMultiplier(100, this)">X100</button>
+</div>
+
+<!-- 4. BIG / SMALL BUTTONS -->
+<div class="big-small-grid">
+<button class="bs-btn bg-big" onclick="openBetModal('Big', 'bs')">Big</button>
+<button class="bs-btn bg-small" onclick="openBetModal('Small', 'bs')">Small</button>
 </div>
 </div>
 
-<!-- TAB 3: COLOR TRADING GAME -->
-<div id="page-color-game" class="tab-page centered-tab">
-<div class="app-header" style="background: linear-gradient(180deg, #9b59b6 0%, #8e44ad 100%);">
-<h1>🎮 Color Trading</h1>
-<p>Guess the color & win double money!</p>
-</div>
-<div class="content-area" style="padding-top:20px;">
-<div class="product-card" style="text-align: center;">
-<div style="font-size: 14px; color: #666;">Period ID: <b id="game-period-id">2026101601</b></div>
-<div style="font-size: 24px; font-weight: bold; color: #e74c3c; margin: 10px 0;">
-⏱️ <span id="game-timer">00:30</span>
-</div>
-
-<div style="display: flex; justify-content: center; gap: 10px; margin: 15px 0;">
-<button class="btn-primary" style="background: #27ae60; width: 30%;" onclick="openColorBetModal('green')">Green (2x)</button>
-<button class="btn-primary" style="background: #9b59b6; width: 30%;" onclick="openColorBetModal('violet')">Violet (4.5x)</button>
-<button class="btn-primary" style="background: #e74c3c; width: 30%;" onclick="openColorBetModal('red')">Red (2x)</button>
-</div>
-</div>
-
-<div class="section-title">My Color Bet History</div>
-<div class="history-card" id="color-bets-history">
-<p style="font-size:12px; color:#888; text-align:center;">No bets placed yet.</p>
+<!-- GAME HISTORY TABLE -->
+<div class="section-title">Game History</div>
+<div class="history-card">
+<div class="history-row" style="font-weight:bold; color:#666;"><span>Period</span><span>Number</span><span>Big/Small</span><span>Color</span></div>
+<div class="history-row"><span>202405240962</span><span style="color:#e74c3c; font-weight:bold;">4</span><span>Small</span><span>🔴</span></div>
+<div class="history-row"><span>202405240961</span><span style="color:#27ae60; font-weight:bold;">1</span><span>Small</span><span>🟢</span></div>
+<div class="history-row"><span>202405240960</span><span style="color:#e74c3c; font-weight:bold;">8</span><span>Big</span><span>🔴</span></div>
 </div>
 </div>
 </div>
 
-<!-- TAB 4: TEAM -->
-<div id="page-team" class="tab-page centered-tab">
-<div class="app-header"><h1>Invite & Earn</h1><p>Share with friends & track details</p></div>
-<div class="content-area">
-<div style="height: 10px;"></div>
-<div class="ref-box">
-<h3>Your Referral Code</h3>
-<div class="ref-code" id="user-ref-code">GENERATING...</div>
-<button class="btn-primary" onclick="copyReferralLink()">📋 Copy Referral Link</button>
-</div>
-<div class="section-title">Your Team Members</div>
-<div class="history-card" id="team-members-list"><p style="font-size:12px; color:#888; text-align:center;">No team members found.</p></div>
-</div>
-</div>
-
-<!-- TAB 5: USER PROFILE -->
-<div id="page-user" class="tab-page centered-tab">
-<div class="app-header">
-<div class="user-profile-bar">
-<div class="user-profile-left"><div class="avatar-icon">👤</div><h1 class="user-display-name">User</h1></div>
-</div>
-<p>Account details & claimed statement</p>
-</div>
-<div class="content-area" style="padding-top:30px;">
-<div class="product-card" style="text-align: center;">
-<div class="row-detail"><span>Name:</span><span class="val user-display-name">User</span></div>
-<div class="row-detail"><span>Email ID:</span><span class="val" id="user-display-email">N/A</span></div>
-<div class="row-detail"><span>Mobile:</span><span class="val" id="user-display-phone">N/A</span></div>
-</div>
-<div class="section-title">Claimed Daily Income History</div>
-<div class="history-card" id="claimed-income-history-list"><p style="font-size:12px; color:#888; text-align:center;">No income claimed yet.</p></div>
-<button class="btn-primary" style="background:#dc3545; margin-top: 10px;" id="logout-btn">Logout</button>
-</div>
-</div>
-
-<!-- TAB 6: ADMIN PANEL -->
-<div id="page-admin" class="tab-page">
-<div class="app-header" style="background: linear-gradient(180deg, #333 0%, #1a1a1a 100%);">
-<h1>Admin Panel</h1>
-<p>Manage Deposits, Withdrawals, Products & Color Game</p>
-</div>
-<div class="content-area" style="padding-top:20px;">
-<!-- Add Product -->
-<div class="product-card">
-<h3>Add New Product</h3>
-<div class="input-group" style="margin-top:10px;"><label>Product Title</label><input type="text" id="adm-p-title" placeholder="e.g. Diamond Ring"></div>
-<div class="input-group"><label>Price (₹)</label><input type="number" id="adm-p-price" placeholder="1000"></div>
-<div class="input-group"><label>Daily Income (₹)</label><input type="number" id="adm-p-daily" placeholder="80"></div>
-<div class="input-group"><label>Cycle (Days)</label><input type="number" id="adm-p-days" placeholder="30"></div>
-<button class="btn-primary" onclick="addNewProductAdmin()">Publish Product</button>
-</div>
-
-<!-- Color Trading Admin Control -->
-<div class="product-card" style="margin-top: 15px;">
-<h3>🎮 Color Trading Admin Control</h3>
-<div class="input-group" style="margin-top:10px;"><label>Period / Round ID</label><input type="text" id="admin-period-id" placeholder="e.g. 2026101601"></div>
-<div class="input-group"><label>Winning Color</label>
-<select id="admin-win-color">
-<option value="green">Green</option>
-<option value="red">Red</option>
-<option value="violet">Violet</option>
-</select>
-</div>
-<div class="input-group"><label>Winning Number (0-9)</label><input type="number" id="admin-win-number" min="0" max="9" placeholder="e.g. 5"></div>
-<button class="btn-primary" onclick="setAdminGameResult()" style="background:#e74c3c;">Set Game Result</button>
-</div>
-
-<div class="section-title">Pending Deposit Requests</div>
-<div class="history-card" id="admin-deposits-list"><p style="font-size:12px; color:#888; text-align:center;">Loading pending deposits...</p></div>
-
-<div class="section-title">Pending Withdrawal Requests</div>
-<div class="history-card" id="admin-withdrawals-list"><p style="font-size:12px; color:#888; text-align:center;">Loading pending withdrawals...</p></div>
-</div>
-</div>
-
-<!-- WHATSAPP FLOATING BUTTON -->
-<a href="https://wa.me/91123456789?text=Hello%20Support" target="_blank" class="whatsapp-float"><span>💬 Support</span></a>
-
-<!-- BOTTOM NAVIGATION BAR -->
+<!-- BOTTOM NAVIGATION -->
 <div class="bottom-nav">
-<div class="nav-item active" onclick="switchTab('home')" id="nav-home"><span class="nav-icon">🏠</span><span>Home</span></div>
-<div class="nav-item" onclick="switchTab('product')" id="nav-product"><span class="nav-icon">🪙</span><span>Products</span></div>
-<div class="nav-item" onclick="switchTab('color-game')" id="nav-color-game"><span class="nav-icon">🎮</span><span>Game</span></div>
-<div class="nav-item" onclick="switchTab('team')" id="nav-team"><span class="nav-icon">👥</span><span>Team</span></div>
-<div class="nav-item" onclick="switchTab('user')" id="nav-user"><span class="nav-icon">👤</span><span>User</span></div>
-<div class="nav-item" onclick="switchTab('admin')" id="nav-admin-btn" style="display: none;"><span class="nav-icon">⚙️</span><span>Admin</span></div>
+<div class="nav-item active" onclick="switchTab('color-game')"><span class="nav-icon">🎮</span><span>Game</span></div>
+<div class="nav-item" onclick="switchTab('wallet')"><span class="nav-icon">💰</span><span>Wallet</span></div>
+<div class="nav-item" onclick="switchTab('history')"><span class="nav-icon">📋</span><span>History</span></div>
+<div class="nav-item" onclick="switchTab('profile')"><span class="nav-icon">👤</span><span>Profile</span></div>
+</div>
 </div>
 
-</div>
-
-<!-- RECHARGE MODAL -->
-<div class="modal-overlay" id="recharge-modal">
+<!-- BET POPUP MODAL -->
+<div class="modal-overlay" id="bet-modal">
 <div class="modal-card">
-<span class="close-modal" onclick="closeRechargeModal()">✕</span>
-<h3>Deposit / Recharge</h3>
-<div id="step-amount-view">
-<div class="input-group" style="margin-top:15px;"><label>Enter Amount (₹)</label><input type="number" id="deposit-amount" placeholder="e.g. 700"></div>
-<button class="btn-primary" onclick="generateDynamicQR()">Generate QR Code</button>
-</div>
-<div id="step-qr-view" style="display: none; text-align: center; margin-top: 10px;">
-<div style="background: #fff; padding: 10px; display: inline-block; border: 1px solid #ddd; border-radius: 10px;"><img id="dynamic-qr-img" src="" style="width: 180px; height: 180px;"></div>
-<div class="input-group" style="margin-top: 12px; text-align: left;"><label>Enter 12-Digit UTR / Transaction ID</label><input type="text" id="utr-number" placeholder="Enter Ref / UTR No"></div>
-<button class="btn-primary" onclick="submitManualRecharge()">Submit Payment Proof</button>
-</div>
+<h3 style="margin-bottom:10px;">Place Bet: <span id="modal-choice-title" style="color:#e74c3c;">Green</span></h3>
+<p style="font-size:12px; color:#666; margin-bottom:15px;">Multiplier Selected: <b id="modal-mult-val">X1</b></p>
+<div class="input-group"><label>Base Amount (₹)</label><input type="number" id="base-bet-amt" value="10"></div>
+<button class="btn-primary" onclick="submitGameBet()" style="background:#e74c3c;">Confirm Bet</button>
+<button class="toggle-btn" onclick="closeBetModal()" style="margin-top:10px;">Cancel</button>
 </div>
 </div>
 
-<!-- WITHDRAW MODAL -->
-<div class="modal-overlay" id="withdraw-modal">
-<div class="modal-card">
-<span class="close-modal" onclick="closeWithdrawModal()">✕</span>
-<h3>Request Withdrawal</h3>
-<div class="input-group" style="margin-top:10px;"><label>Amount (₹)</label><input type="number" id="withdraw-amt" placeholder="e.g. 500"></div>
-<div class="input-group"><label>Method</label><select id="payout-method"><option value="upi">UPI ID</option></select></div>
-<div class="input-group"><label>UPI ID</label><input type="text" id="withdraw-upi" placeholder="e.g. 9876543210@paytm"></div>
-<button class="btn-primary" onclick="submitWithdrawRequest()">Submit Withdrawal</button>
-</div>
-</div>
-
-<!-- COLOR BET MODAL -->
-<div class="modal-overlay" id="color-bet-modal">
-<div class="modal-card">
-<span class="close-modal" onclick="closeColorBetModal()">✕</span>
-<h3>Place Bet on <span id="selected-color-title" style="text-transform: uppercase;">Green</span></h3>
-<div class="input-group" style="margin-top:15px;"><label>Amount (₹)</label><input type="number" id="color-bet-amt" placeholder="e.g. 100"></div>
-<button class="btn-primary" onclick="confirmColorBet()">Confirm Bet</button>
-</div>
-</div>
-
-<!-- FIREBASE & APP LOGIC -->
+<!-- SCRIPT LOGIC -->
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut, RecaptchaVerifier, signInWithPhoneNumber } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-import { getFirestore, doc, getDoc, setDoc, updateDoc, addDoc, collection, onSnapshot, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import { getAuth, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import { getFirestore, doc, addDoc, collection } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 const firebaseConfig = {
 apiKey: "AIzaSyBilxSDUUVefx01qC8hSA5geDqP7VKpVGw",
@@ -372,350 +201,74 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-const ADMIN_EMAIL = "ravikishankumar20019777@okicici.com";
-
 let currentUser = null;
-let userData = {};
-let isLogin = false;
-let allProductsList = [];
-let selectedChoiceColor = "";
-let currentGamePeriod = "2026101601";
+let currentMultiplier = 1;
+let selectedChoice = "";
 
-window.switchTab = function(tabName) {
+window.switchTab = (tab) => {
 document.querySelectorAll(".tab-page").forEach(p => p.classList.remove("active-page"));
 document.querySelectorAll(".nav-item").forEach(n => n.classList.remove("active"));
-const targetPage = document.getElementById("page-" + tabName);
-if(targetPage) targetPage.classList.add("active-page");
-const targetNav = document.getElementById("nav-" + tabName);
-if(targetNav) targetNav.classList.add("active");
-window.scrollTo(0, 0);
+if(tab === 'color-game') document.getElementById("page-color-game").classList.add("active-page");
 };
 
-window.openRechargeModal = () => document.getElementById("recharge-modal").style.display = "flex";
-window.closeRechargeModal = () => document.getElementById("recharge-modal").style.display = "none";
-window.openWithdrawModal = () => document.getElementById("withdraw-modal").style.display = "flex";
-window.closeWithdrawModal = () => document.getElementById("withdraw-modal").style.display = "none";
-
-window.openColorBetModal = (color) => {
-selectedChoiceColor = color;
-document.getElementById("selected-color-title").innerText = color;
-document.getElementById("color-bet-modal").style.display = "flex";
-};
-window.closeColorBetModal = () => document.getElementById("color-bet-modal").style.display = "none";
-
-window.copyReferralLink = () => {
-const refCode = userData.referralCode || "TRK1234";
-const link = window.location.origin + window.location.pathname + "?ref=" + refCode;
-navigator.clipboard.writeText(link).then(() => alert("Referral Link Copied!"));
+window.setMultiplier = (mult, btnElement) => {
+currentMultiplier = mult;
+document.querySelectorAll(".m-btn").forEach(b => b.classList.remove("active-mult"));
+btnElement.classList.add("active-mult");
 };
 
-const authScreen = document.getElementById("auth-screen");
-const dashboardScreen = document.getElementById("dashboard-screen");
-const formTitle = document.getElementById("form-title");
-const mainBtn = document.getElementById("main-btn");
-const toggleBtn = document.getElementById("toggle-btn");
-const nameGroup = document.getElementById("name-group");
-const phoneGroup = document.getElementById("phone-group");
-const refGroup = document.getElementById("ref-group");
+window.openBetModal = (choice, type) => {
+selectedChoice = choice;
+document.getElementById("modal-choice-title").innerText = choice;
+document.getElementById("modal-mult-val").innerText = "X" + currentMultiplier;
+document.getElementById("bet-modal").style.display = "flex";
+};
 
-toggleBtn.addEventListener("click", () => {
-isLogin = !isLogin;
-formTitle.innerText = isLogin ? "Login" : "Create Account";
-mainBtn.innerText = isLogin ? "Login" : "Create Account";
-toggleBtn.innerText = isLogin ? "Need an account? Register" : "Already have an account? Login";
-nameGroup.style.display = isLogin ? "none" : "block";
-phoneGroup.style.display = isLogin ? "none" : "block";
-refGroup.style.display = isLogin ? "none" : "block";
+window.closeBetModal = () => {
+document.getElementById("bet-modal").style.display = "none";
+};
+
+window.submitGameBet = async () => {
+let base = parseFloat(document.getElementById("base-bet-amt").value) || 10;
+let totalAmount = base * currentMultiplier;
+
+try {
+await addDoc(collection(db, "color_bets"), {
+userId: currentUser ? currentUser.uid : "guest",
+choice: selectedChoice,
+multiplier: currentMultiplier,
+totalAmount: totalAmount,
+status: "pending",
+timestamp: Date.now()
 });
-
-mainBtn.addEventListener("click", () => {
-const email = document.getElementById("email").value.trim();
-const password = document.getElementById("password").value;
-const name = document.getElementById("reg-name").value.trim();
-const phone = document.getElementById("reg-phone").value.trim();
-const refCode = document.getElementById("reg-ref").value.trim().toUpperCase();
-
-if (!email || !password) return alert("Fill all required fields");
-
-if (isLogin) {
-signInWithEmailAndPassword(auth, email, password).catch(e => alert(e.message));
-} else {
-if (!phone || phone.length < 10) return alert("Enter valid mobile number");
-createUserWithEmailAndPassword(auth, email, password)
-.then(async (res) => {
-const myRefCode = "TRK" + Math.floor(1000 + Math.random() * 9000);
-await setDoc(doc(db, "users", res.user.uid), {
-name: name || "User",
-phone: phone || "",
-email: email,
-balance: 0, deposit: 0, withdraw: 0, cashback: 0, referrals: 0,
-referralCode: myRefCode, referredBy: refCode || null, activeProducts: {}
-});
-}).catch(e => alert(e.message));
+alert(`सफलतापूर्वक ₹${totalAmount} की बेट लग गई!`);
+closeBetModal();
+} catch(e) {
+alert("त्रुटि: " + e.message);
 }
-});
+};
 
-window.triggerLogout = () => signOut(auth);
-document.getElementById("logout-btn").addEventListener("click", () => signOut(auth));
+document.getElementById("main-btn").addEventListener("click", () => {
+let e = document.getElementById("email").value;
+let p = document.getElementById("password").value;
+signInWithEmailAndPassword(auth, e, p).catch(err => alert(err.message));
+});
 
 onAuthStateChanged(auth, (user) => {
-if (user) {
+if(user) {
 currentUser = user;
-authScreen.style.display = "none";
-dashboardScreen.style.display = "block";
-switchTab('home');
-
-const adminBtn = document.getElementById("nav-admin-btn");
-if (user.email === ADMIN_EMAIL) {
-if(adminBtn) adminBtn.style.display = "block";
-loadAdminDeposits();
-loadAdminWithdrawals();
-} else {
-if(adminBtn) adminBtn.style.display = "none";
-}
-
-onSnapshot(doc(db, "users", user.uid), (docSnap) => {
-if (docSnap.exists()) {
-userData = docSnap.data();
-document.querySelectorAll(".user-display-name").forEach(e => e.innerText = userData.name || "User");
-document.getElementById("user-display-email").innerText = userData.email || user.email || "N/A";
-document.getElementById("user-display-phone").innerText = userData.phone || "N/A";
-document.getElementById("val-balance").innerText = "₹" + (userData.balance || 0).toFixed(2);
-document.getElementById("val-deposit").innerText = "₹" + (userData.deposit || 0);
-document.getElementById("val-withdraw").innerText = "₹" + (userData.withdraw || 0);
-document.getElementById("val-cashback").innerText = "₹" + (userData.cashback || 0).toFixed(2);
-document.getElementById("val-ref").innerText = userData.referrals || 0;
-document.getElementById("user-ref-code").innerText = userData.referralCode || "TRK1234";
-renderProductsUI();
+document.getElementById("auth-screen").style.display = "none";
+document.getElementById("dashboard-screen").style.display = "block";
 }
 });
 
-loadProductsFromDB();
-loadRechargeStatus(user.uid);
-loadWithdrawalStatus(user.uid);
-loadTeamMembers(user.uid);
-loadClaimedIncomeHistory(user.uid);
-loadColorBetHistory(user.uid);
-} else {
-authScreen.style.display = "block";
-dashboardScreen.style.display = "none";
-}
-});
-
-// COLOR TRADING BET ACTION
-window.confirmColorBet = async () => {
-const amt = parseFloat(document.getElementById("color-bet-amt").value);
-if(!amt || amt <= 0) return alert("कृपया वैध राशि दर्ज करें!");
-if((userData.balance || 0) < amt) return alert("पर्याप्त बैलेंस नहीं है! कृपया पहले रिचार्ज करें।");
-
-try {
-await updateDoc(doc(db, "users", currentUser.uid), { balance: userData.balance - amt });
-await addDoc(collection(db, "color_bets"), {
-userId: currentUser.uid, userName: userData.name || "User",
-periodId: currentGamePeriod, choice: selectedChoiceColor,
-amount: amt, status: "pending", timestamp: Date.now()
-});
-alert("सफलतापूर्वक बेट लग गई है!");
-closeColorBetModal();
-document.getElementById("color-bet-amt").value = "";
-} catch(e) { alert("त्रुटि: " + e.message); }
-};
-
-function loadColorBetHistory(uid) {
-const q = query(collection(db, "color_bets"), where("userId", "==", uid));
-onSnapshot(q, (snapshot) => {
-const container = document.getElementById("color-bets-history");
-if(snapshot.empty) {
-container.innerHTML = `<p style="font-size:12px; color:#888; text-align:center;">No bets placed yet.</p>`;
-return;
-}
-let html = "";
-snapshot.forEach(docSnap => {
-let d = docSnap.data();
-let stClass = d.status === 'win' ? 'status-approved' : (d.status === 'loss' ? 'status-rejected' : 'status-pending');
-html += `<div class="history-item"><span>₹${d.amount} on <b style="text-transform:uppercase;">${d.choice}</b></span><span class="${stClass}">${d.status}</span></div>`;
-});
-container.innerHTML = html;
-});
-}
-
-// ADMIN COLOR GAME RESULT
-window.setAdminGameResult = async () => {
-const periodId = document.getElementById("admin-period-id").value.trim();
-const winColor = document.getElementById("admin-win-color").value;
-const winNumber = parseInt(document.getElementById("admin-win-number").value);
-if (!periodId) return alert("कृपया पीरियड आईडी दर्ज करें!");
-
-try {
-await setDoc(doc(db, "color_rounds", periodId), {
-periodId: periodId, resultColor: winColor, resultNumber: winNumber, status: "locked", timestamp: Date.now()
-}, { merge: true });
-alert(`सफलतापूर्वक पीरियड ${periodId} का परिणाम सेट कर दिया गया है!`);
-} catch (error) { alert("त्रुटि: " + error.message); }
-};
-
-// STANDARD FUNCTIONS FOR PRODUCTS & RECHARGE
-window.addNewProductAdmin = async () => {
-const title = document.getElementById("adm-p-title").value.trim();
-const price = parseFloat(document.getElementById("adm-p-price").value);
-const daily = parseFloat(document.getElementById("adm-p-daily").value);
-const days = parseInt(document.getElementById("adm-p-days").value);
-if(!title || !price || !daily || !days) return alert("Fill all product fields!");
-try {
-let pId = "prod_" + Date.now();
-await setDoc(doc(db, "products", pId), { id: pId, title, price, dailyIncome: daily, cycle: days, createdAt: Date.now() });
-alert("New Product Added Successfully!");
-} catch(e) { alert(e.message); }
-};
-
-function loadProductsFromDB() {
-onSnapshot(collection(db, "products"), (snapshot) => {
-let products = [];
-snapshot.forEach((docSnap) => products.push(docSnap.data()));
-if(products.length === 0) {
-products = [
-{ id: "silver_chain", title: "🔗 Silver Chain", price: 700, dailyIncome: 61, cycle: 31 },
-{ id: "silver_coin_10g", title: "🪙 Silver Coin (10g)", price: 1200, dailyIncome: 90, cycle: 28 }
-];
-}
-allProductsList = products;
-renderProductsUI();
-});
-}
-
-function renderProductsUI() {
-const container = document.getElementById("dynamic-products-list");
-if(!container) return;
-let html = "";
-allProductsList.forEach(p => {
-let isActive = userData.activeProducts && userData.activeProducts[p.id] && userData.activeProducts[p.id].active;
-html += `
-<div class="product-card">
-<div class="product-head"><div class="product-title">${p.title}</div><span class="badge ${isActive ? 'badge-active' : ''}">${isActive ? 'Active' : 'Not Active'}</span></div>
-<div class="row-detail"><span>Price</span><span class="val">₹${p.price}</span></div>
-<div class="row-detail"><span>Daily Income</span><span class="val">₹${p.dailyIncome}</span></div>
-${!isActive ? `<button class="btn-action" onclick="buyProduct('${p.id}',${p.price}, ${p.dailyIncome})">Buy - ₹${p.price}</button>` : `<button class="btn-action" style="background:#ffb703;" onclick="claimDailyIncome('${p.id}', '${p.title}',${p.dailyIncome})">Claim Income</button>`}
-</div>`;
-});
-container.innerHTML = html;
-}
-
-window.buyProduct = async (pKey, price, daily) => {
-if((userData.balance || 0) < price) return alert("Insufficient Balance!");
-let activeProds = userData.activeProducts || {};
-activeProds[pKey] = { active: true, dailyRate: daily, lastClaim: null };
-await updateDoc(doc(db, "users", currentUser.uid), { balance: userData.balance - price, activeProducts: activeProds });
-alert("Product Purchased!");
-};
-
-window.claimDailyIncome = async (pKey, pTitle, daily) => {
-let activeProds = userData.activeProducts || {};
-let now = Date.now();
-if(now - (activeProds[pKey]?.lastClaim || 0) < 86400000) return alert("Claim available once every 24 hours!");
-activeProds[pKey].lastClaim = now;
-await updateDoc(doc(db, "users", currentUser.uid), { balance: (userData.balance || 0) + daily, activeProducts: activeProds });
-await addDoc(collection(db, "claimed_income"), { userId: currentUser.uid, productTitle: pTitle, amount: daily, timestamp: now });
-alert("Claimed Successfully!");
-};
-
-window.generateDynamicQR = () => {
-const amt = parseFloat(document.getElementById("deposit-amount").value);
-if(!amt || amt <= 0) return alert("Enter amount");
-document.getElementById("dynamic-qr-img").src = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=upi://pay?pa=ravikishankumar20019777@okicici&am=${amt}&cu=INR`;
-document.getElementById("step-amount-view").style.display = "none";
-document.getElementById("step-qr-view").style.display = "block";
-};
-
-window.submitManualRecharge = async () => {
-const amt = parseFloat(document.getElementById("deposit-amount").value);
-const utr = document.getElementById("utr-number").value.trim();
-if(!utr) return alert("Enter UTR");
-await addDoc(collection(db, "deposits"), { userId: currentUser.uid, userName: userData.name || "User", amount: amt, utr, status: "Pending", timestamp: Date.now() });
-alert("Submitted successfully!");
-closeRechargeModal();
-};
-
-window.submitWithdrawRequest = async () => {
-const amt = parseFloat(document.getElementById("withdraw-amt").value);
-const upi = document.getElementById("withdraw-upi").value.trim();
-if(!amt || (userData.balance || 0) < amt) return alert("Invalid amount or low balance");
-await addDoc(collection(db, "withdrawals"), { userId: currentUser.uid, userName: userData.name || "User", amount: amt, payoutInfo: { method: 'UPI', target: upi }, status: "Pending", timestamp: Date.now() });
-await updateDoc(doc(db, "users", currentUser.uid), { balance: userData.balance - amt });
-alert("Withdrawal requested!");
-closeWithdrawModal();
-};
-
-function loadRechargeStatus(uid) {
-onSnapshot(query(collection(db, "deposits"), where("userId", "==", uid)), (snapshot) => {
-let html = "";
-snapshot.forEach(d => { let data = d.data(); html += `<div class="history-item"><span>₹${data.amount}</span><span class="status-${data.status.toLowerCase()}">${data.status}</span></div>`; });
-document.getElementById("recharge-history-list").innerHTML = html || '<p style="font-size:12px; color:#888; text-align:center;">No history</p>';
-});
-}
-
-function loadWithdrawalStatus(uid) {
-onSnapshot(query(collection(db, "withdrawals"), where("userId", "==", uid)), (snapshot) => {
-let html = "";
-snapshot.forEach(d => { let data = d.data(); html += `<div class="history-item"><span>₹${data.amount}</span><span class="status-${data.status.toLowerCase()}">${data.status}</span></div>`; });
-document.getElementById("withdrawal-history-list").innerHTML = html || '<p style="font-size:12px; color:#888; text-align:center;">No history</p>';
-});
-}
-
-function loadTeamMembers(uid) {
-onSnapshot(query(collection(db, "users"), where("referredBy", "==", userData.referralCode || "")), (snapshot) => {
-let html = "";
-snapshot.forEach(d => { let m = d.data(); html += `<div class="history-item"><span>👤 ${m.name}</span><span style="color:#10a330; font-weight:bold;">Active</span></div>`; });
-document.getElementById("team-members-list").innerHTML = html || '<p style="font-size:12px; color:#888; text-align:center;">No team members</p>';
-});
-}
-
-function loadClaimedIncomeHistory(uid) {
-onSnapshot(query(collection(db, "claimed_income"), where("userId", "==", uid)), (snapshot) => {
-let html = "";
-snapshot.forEach(d => { let data = d.data(); html += `<div class="history-item"><span>${data.productTitle}</span><span style="color:#27ae60; font-weight:bold;">+₹${data.amount}</span></div>`; });
-document.getElementById("claimed-income-history-list").innerHTML = html || '<p style="font-size:12px; color:#888; text-align:center;">No income claimed</p>';
-});
-}
-
-function loadAdminDeposits() {
-onSnapshot(collection(db, "deposits"), (snapshot) => {
-let html = "";
-snapshot.forEach(docSnap => {
-let d = docSnap.data();
-if(d.status === 'Pending') {
-html += `<div class="history-item"><span><b>${d.userName}</b> - ₹${d.amount}</span><button class="btn-action" style="padding:4px 8px; width:auto;" onclick="approveDeposit('${docSnap.id}', '${d.userId}', ${d.amount})">Approve</button></div>`;
-}
-});
-document.getElementById("admin-deposits-list").innerHTML = html || '<p style="font-size:12px; color:#888; text-align:center;">No pending</p>';
-});
-}
-
-function loadAdminWithdrawals() {
-onSnapshot(collection(db, "withdrawals"), (snapshot) => {
-let html = "";
-snapshot.forEach(docSnap => {
-let d = docSnap.data();
-if(d.status === 'Pending') {
-html += `<div class="history-item"><span><b>${d.userName}</b> - ₹${d.amount}</span><button class="btn-action" style="padding:4px 8px; width:auto;" onclick="approveWithdrawal('${docSnap.id}')">Approve</button></div>`;
-}
-});
-document.getElementById("admin-withdrawals-list").innerHTML = html || '<p style="font-size:12px; color:#888; text-align:center;">No pending</p>';
-});
-}
-
-window.approveDeposit = async (id, uid, amt) => {
-await updateDoc(doc(db, "deposits", id), { status: "Approved" });
-const uDoc = await getDoc(doc(db, "users", uid));
-if(uDoc.exists()) {
-await updateDoc(doc(db, "users", uid), { deposit: (uDoc.data().deposit || 0) + amt, balance: (uDoc.data().balance || 0) + amt });
-}
-alert("Approved!");
-};
-
-window.approveWithdrawal = async (id) => {
-await updateDoc(doc(db, "withdrawals", id), { status: "Approved" });
-alert("Approved!");
-};
+let timeLeft = 30;
+setInterval(() => {
+timeLeft--;
+if(timeLeft < 0) timeLeft = 30;
+let secStr = timeLeft < 10 ? "0" + timeLeft : timeLeft;
+document.getElementById("game-timer").innerText = "00:" + secStr;
+}, 1000);
 </script>
 </body>
 </html>
