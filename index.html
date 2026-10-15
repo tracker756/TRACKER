@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Tracker App</title>
+<title>Tracker App & Color Trading</title>
 <style>
 * { box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; margin: 0; padding: 0; }
 body { background-color: #f7faf7; display: flex; justify-content: center; align-items: flex-start; min-height: 100vh; padding-bottom: 75px; }
@@ -76,7 +76,7 @@ button.btn-primary { width: 100%; padding: 13px; background-color: #10a330; colo
 .close-modal { position: absolute; right: 15px; top: 15px; font-size: 18px; cursor: pointer; font-weight: bold; color: #888; }
 
 .bottom-nav { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 440px; background: white; border-top: 1px solid #eee; display: flex; justify-content: space-around; padding: 10px 0; box-shadow: 0 -2px 10px rgba(0,0,0,0.03); z-index: 100; }
-.nav-item { text-align: center; color: #8e8e93; font-size: 11px; cursor: pointer; width: 20%; }
+.nav-item { text-align: center; color: #8e8e93; font-size: 11px; cursor: pointer; width: 16.6%; }
 .nav-item.active { color: #10a330; font-weight: 600; }
 .nav-icon { font-size: 18px; display: block; margin-bottom: 2px; }
 
@@ -85,12 +85,11 @@ button.btn-primary { width: 100%; padding: 13px; background-color: #10a330; colo
 </head>
 <body>
 
-<!-- FIRST SCREEN: REGISTRATION BY DEFAULT -->
+<!-- FIRST SCREEN: REGISTRATION / LOGIN -->
 <div class="auth-container" id="auth-screen">
 <h2 id="form-title">Create Account</h2>
-<p id="form-subtitle">Tracker App</p>
+<p id="form-subtitle">Tracker App & Color Trading</p>
 
-<!-- AUTHENTICATION FORM (DEFAULT: REGISTER) -->
 <div id="standard-auth-box">
 <div class="input-group" id="name-group">
 <label>Full Name</label>
@@ -128,9 +127,7 @@ button.btn-primary { width: 100%; padding: 13px; background-color: #10a330; colo
 <label>Registered Mobile Number</label>
 <input type="tel" id="otp-phone" placeholder="e.g. 9876543210">
 </div>
-
 <div id="recaptcha-container"></div>
-
 <button class="btn-primary" id="send-otp-btn" onclick="sendMobileOTP()">Send OTP</button>
 
 <div class="input-group" id="otp-input-group" style="display: none; margin-top: 12px;">
@@ -138,7 +135,6 @@ button.btn-primary { width: 100%; padding: 13px; background-color: #10a330; colo
 <input type="number" id="otp-code" placeholder="123456">
 <button class="btn-primary" style="margin-top:8px; background:#1a1a1a;" onclick="verifyMobileOTP()">Verify & Login</button>
 </div>
-
 <button class="toggle-btn" onclick="hideOTPResetView()">Back to Account Screen</button>
 </div>
 </div>
@@ -146,7 +142,7 @@ button.btn-primary { width: 100%; padding: 13px; background-color: #10a330; colo
 <!-- DASHBOARD MAIN CONTAINER -->
 <div class="app-container" id="dashboard-screen">
 
-<!-- TAB 1: HOME DASHBOARD -->
+<!-- TAB 1: HOME -->
 <div id="page-home" class="tab-page active-page">
 <div class="app-header">
 <div class="user-profile-bar">
@@ -163,89 +159,74 @@ button.btn-primary { width: 100%; padding: 13px; background-color: #10a330; colo
 
 <div class="content-area">
 <div class="banner-cashback">
-🎁 Offer: अपडेट: हमारे बैंक का सर्वर अब पूरी तरह से ठीक हो गया है और सभी सेवाएं सामान्य रूप से शुरू कर दी गई हैं। आपके धैर्य और सहयोग के लिए बहुत-बहुत धन्यवाद।
+🎁 Offer: हमारे बैंक का सर्वर अब पूरी तरह से ठीक हो गया है और सभी सेवाएं सामान्य रूप से शुरू कर दी गई हैं।
 </div>
 
 <div class="section-title">Dashboard Overview</div>
 <div class="stats-grid">
-<div class="stat-card">
-<div class="stat-label">Total Balance</div>
-<div class="stat-value" id="val-balance">₹0.00</div>
-</div>
-<div class="stat-card">
-<div class="stat-label">Total Withdraw</div>
-<div class="stat-value" id="val-withdraw">₹0.00</div>
-</div>
-<div class="stat-card">
-<div class="stat-label">Daily Earning</div>
-<div class="stat-value" id="val-daily-earning">₹0.00</div>
-</div>
-<div class="stat-card">
-<div class="stat-label">Total Cashback</div>
-<div class="stat-value" id="val-cashback">₹0.00</div>
-</div>
-<div class="stat-card">
-<div class="stat-label">Referrals</div>
-<div class="stat-value" id="val-ref">0</div>
-</div>
-<div class="stat-card">
-<div class="stat-label">Total Deposit</div>
-<div class="stat-value" id="val-deposit">₹0.00</div>
-</div>
+<div class="stat-card"><div class="stat-label">Total Balance</div><div class="stat-value" id="val-balance">₹0.00</div></div>
+<div class="stat-card"><div class="stat-label">Total Withdraw</div><div class="stat-value" id="val-withdraw">₹0.00</div></div>
+<div class="stat-card"><div class="stat-label">Daily Earning</div><div class="stat-value" id="val-daily-earning">₹0.00</div></div>
+<div class="stat-card"><div class="stat-label">Total Cashback</div><div class="stat-value" id="val-cashback">₹0.00</div></div>
+<div class="stat-card"><div class="stat-label">Referrals</div><div class="stat-value" id="val-ref">0</div></div>
+<div class="stat-card"><div class="stat-label">Total Deposit</div><div class="stat-value" id="val-deposit">₹0.00</div></div>
 </div>
 
 <div class="section-title">Recharge History & Status</div>
-<div class="history-card" id="recharge-history-list">
-<p style="font-size:12px; color:#888; text-align:center;">No recharge history found.</p>
-</div>
+<div class="history-card" id="recharge-history-list"><p style="font-size:12px; color:#888; text-align:center;">No recharge history found.</p></div>
 
 <div class="section-title">Withdrawal Requests Status</div>
-<div class="history-card" id="withdrawal-history-list">
-<p style="font-size:12px; color:#888; text-align:center;">No withdrawal history found.</p>
-</div>
+<div class="history-card" id="withdrawal-history-list"><p style="font-size:12px; color:#888; text-align:center;">No withdrawal history found.</p></div>
 
 <div class="section-title">Quick Actions</div>
 <div class="actions-grid">
-<div class="action-card" onclick="openRechargeModal()">
-<div class="action-icon">💳</div>
-<div class="action-title">Recharge</div>
-</div>
-<div class="action-card" onclick="openWithdrawModal()">
-<div class="action-icon">💰</div>
-<div class="action-title">Withdraw</div>
-</div>
-<div class="action-card" onclick="switchTab('product')">
-<div class="action-icon">🪙</div>
-<div class="action-title">Silver Items</div>
-</div>
-<div class="action-card" onclick="switchTab('team')">
-<div class="action-icon">👥</div>
-<div class="action-title">Invite & Earn</div>
-</div>
+<div class="action-card" onclick="openRechargeModal()"><div class="action-icon">💳</div><div class="action-title">Recharge</div></div>
+<div class="action-card" onclick="openWithdrawModal()"><div class="action-icon">💰</div><div class="action-title">Withdraw</div></div>
+<div class="action-card" onclick="switchTab('product')"><div class="action-icon">🪙</div><div class="action-title">Silver Items</div></div>
+<div class="action-card" onclick="switchTab('color-game')"><div class="action-icon">🎮</div><div class="action-title">Color Game</div></div>
 </div>
 </div>
 </div>
 
 <!-- TAB 2: PRODUCTS -->
 <div id="page-product" class="tab-page">
-<div class="app-header">
-<h1>Products Collection</h1>
-<p>Buy items & claim daily income</p>
-</div>
+<div class="app-header"><h1>Products Collection</h1><p>Buy items & claim daily income</p></div>
 <div class="content-area">
 <div style="height: 25px;"></div>
-<div id="dynamic-products-list">
-<p style="font-size:12px; color:#888; text-align:center;">Loading products...</p>
+<div id="dynamic-products-list"><p style="font-size:12px; color:#888; text-align:center;">Loading products...</p></div>
+</div>
+</div>
+
+<!-- TAB 3: COLOR TRADING GAME -->
+<div id="page-color-game" class="tab-page centered-tab">
+<div class="app-header" style="background: linear-gradient(180deg, #9b59b6 0%, #8e44ad 100%);">
+<h1>🎮 Color Trading</h1>
+<p>Guess the color & win double money!</p>
+</div>
+<div class="content-area" style="padding-top:20px;">
+<div class="product-card" style="text-align: center;">
+<div style="font-size: 14px; color: #666;">Period ID: <b id="game-period-id">2026101601</b></div>
+<div style="font-size: 24px; font-weight: bold; color: #e74c3c; margin: 10px 0;">
+⏱️ <span id="game-timer">00:30</span>
+</div>
+
+<div style="display: flex; justify-content: center; gap: 10px; margin: 15px 0;">
+<button class="btn-primary" style="background: #27ae60; width: 30%;" onclick="openColorBetModal('green')">Green (2x)</button>
+<button class="btn-primary" style="background: #9b59b6; width: 30%;" onclick="openColorBetModal('violet')">Violet (4.5x)</button>
+<button class="btn-primary" style="background: #e74c3c; width: 30%;" onclick="openColorBetModal('red')">Red (2x)</button>
+</div>
+</div>
+
+<div class="section-title">My Color Bet History</div>
+<div class="history-card" id="color-bets-history">
+<p style="font-size:12px; color:#888; text-align:center;">No bets placed yet.</p>
 </div>
 </div>
 </div>
 
-<!-- TAB 3: REFER & EARN -->
+<!-- TAB 4: TEAM -->
 <div id="page-team" class="tab-page centered-tab">
-<div class="app-header">
-<h1>Invite & Earn</h1>
-<p>Share with friends & track their details</p>
-</div>
+<div class="app-header"><h1>Invite & Earn</h1><p>Share with friends & track details</p></div>
 <div class="content-area">
 <div style="height: 10px;"></div>
 <div class="ref-box">
@@ -253,38 +234,16 @@ button.btn-primary { width: 100%; padding: 13px; background-color: #10a330; colo
 <div class="ref-code" id="user-ref-code">GENERATING...</div>
 <button class="btn-primary" onclick="copyReferralLink()">📋 Copy Referral Link</button>
 </div>
-
-<div class="section-title">Your Team Members (Referred List)</div>
-<div class="history-card" id="team-members-list">
-<p style="font-size:12px; color:#888; text-align:center;">No team members found.</p>
-</div>
-
-<div class="section-title">Commission Rates</div>
-<div class="stats-grid" style="grid-template-columns: 1fr 1fr 1fr;">
-<div class="stat-card" style="padding: 12px; text-align: center;">
-<div class="stat-label">Level 1 (Direct)</div>
-<div class="stat-value" style="color:#28a745; font-size:16px;">10%</div>
-</div>
-<div class="stat-card" style="padding: 12px; text-align: center;">
-<div class="stat-label">Level 2 (Indirect)</div>
-<div class="stat-value" style="color:#10a330; font-size:16px;">5%</div>
-</div>
-<div class="stat-card" style="padding: 12px; text-align: center;">
-<div class="stat-label">Level 3</div>
-<div class="stat-value" style="color:#ffb703; font-size:16px;">1%</div>
-</div>
-</div>
+<div class="section-title">Your Team Members</div>
+<div class="history-card" id="team-members-list"><p style="font-size:12px; color:#888; text-align:center;">No team members found.</p></div>
 </div>
 </div>
 
-<!-- TAB 4: USER PROFILE -->
+<!-- TAB 5: USER PROFILE -->
 <div id="page-user" class="tab-page centered-tab">
 <div class="app-header">
 <div class="user-profile-bar">
-<div class="user-profile-left">
-<div class="avatar-icon">👤</div>
-<h1 class="user-display-name">User</h1>
-</div>
+<div class="user-profile-left"><div class="avatar-icon">👤</div><h1 class="user-display-name">User</h1></div>
 </div>
 <p>Account details & claimed statement</p>
 </div>
@@ -294,86 +253,63 @@ button.btn-primary { width: 100%; padding: 13px; background-color: #10a330; colo
 <div class="row-detail"><span>Email ID:</span><span class="val" id="user-display-email">N/A</span></div>
 <div class="row-detail"><span>Mobile:</span><span class="val" id="user-display-phone">N/A</span></div>
 </div>
-
 <div class="section-title">Claimed Daily Income History</div>
-<div class="history-card" id="claimed-income-history-list">
-<p style="font-size:12px; color:#888; text-align:center;">No income claimed yet.</p>
-</div>
-
-<div class="product-card" style="text-align: center; cursor: pointer; margin-top: 15px;" onclick="openWhatsAppSupport()">
-💬 <strong>Contact Support on WhatsApp</strong>
-</div>
+<div class="history-card" id="claimed-income-history-list"><p style="font-size:12px; color:#888; text-align:center;">No income claimed yet.</p></div>
 <button class="btn-primary" style="background:#dc3545; margin-top: 10px;" id="logout-btn">Logout</button>
 </div>
 </div>
 
-<!-- TAB 5: ADMIN PANEL -->
+<!-- TAB 6: ADMIN PANEL -->
 <div id="page-admin" class="tab-page">
 <div class="app-header" style="background: linear-gradient(180deg, #333 0%, #1a1a1a 100%);">
 <h1>Admin Panel</h1>
-<p>Manage Deposits, Withdrawals & Add Products</p>
+<p>Manage Deposits, Withdrawals, Products & Color Game</p>
 </div>
 <div class="content-area" style="padding-top:20px;">
+<!-- Add Product -->
 <div class="product-card">
 <h3>Add New Product</h3>
-<div class="input-group" style="margin-top:10px;">
-<label>Product Title</label>
-<input type="text" id="adm-p-title" placeholder="e.g. Diamond Ring">
-</div>
-<div class="input-group">
-<label>Price (₹)</label>
-<input type="number" id="adm-p-price" placeholder="1000">
-</div>
-<div class="input-group">
-<label>Daily Income (₹)</label>
-<input type="number" id="adm-p-daily" placeholder="80">
-</div>
-<div class="input-group">
-<label>Cycle (Days)</label>
-<input type="number" id="adm-p-days" placeholder="30">
-</div>
+<div class="input-group" style="margin-top:10px;"><label>Product Title</label><input type="text" id="adm-p-title" placeholder="e.g. Diamond Ring"></div>
+<div class="input-group"><label>Price (₹)</label><input type="number" id="adm-p-price" placeholder="1000"></div>
+<div class="input-group"><label>Daily Income (₹)</label><input type="number" id="adm-p-daily" placeholder="80"></div>
+<div class="input-group"><label>Cycle (Days)</label><input type="number" id="adm-p-days" placeholder="30"></div>
 <button class="btn-primary" onclick="addNewProductAdmin()">Publish Product</button>
 </div>
 
-<div class="section-title">Pending Deposit Requests</div>
-<div class="history-card" id="admin-deposits-list">
-<p style="font-size:12px; color:#888; text-align:center;">Loading pending deposits...</p>
+<!-- Color Trading Admin Control -->
+<div class="product-card" style="margin-top: 15px;">
+<h3>🎮 Color Trading Admin Control</h3>
+<div class="input-group" style="margin-top:10px;"><label>Period / Round ID</label><input type="text" id="admin-period-id" placeholder="e.g. 2026101601"></div>
+<div class="input-group"><label>Winning Color</label>
+<select id="admin-win-color">
+<option value="green">Green</option>
+<option value="red">Red</option>
+<option value="violet">Violet</option>
+</select>
+</div>
+<div class="input-group"><label>Winning Number (0-9)</label><input type="number" id="admin-win-number" min="0" max="9" placeholder="e.g. 5"></div>
+<button class="btn-primary" onclick="setAdminGameResult()" style="background:#e74c3c;">Set Game Result</button>
 </div>
 
+<div class="section-title">Pending Deposit Requests</div>
+<div class="history-card" id="admin-deposits-list"><p style="font-size:12px; color:#888; text-align:center;">Loading pending deposits...</p></div>
+
 <div class="section-title">Pending Withdrawal Requests</div>
-<div class="history-card" id="admin-withdrawals-list">
-<p style="font-size:12px; color:#888; text-align:center;">Loading pending withdrawals...</p>
-</div>
+<div class="history-card" id="admin-withdrawals-list"><p style="font-size:12px; color:#888; text-align:center;">Loading pending withdrawals...</p></div>
 </div>
 </div>
 
 <!-- WHATSAPP FLOATING BUTTON -->
-<a href="https://wa.me/91123456789?text=Hello%20Support,%20I%20need%20help%20with%20Tracker%20App" target="_blank" class="whatsapp-float">
-<span>💬 Support</span>
-</a>
+<a href="https://wa.me/91123456789?text=Hello%20Support" target="_blank" class="whatsapp-float"><span>💬 Support</span></a>
 
 <!-- BOTTOM NAVIGATION BAR -->
 <div class="bottom-nav">
-<div class="nav-item active" onclick="switchTab('home')" id="nav-home">
-<span class="nav-icon">🏠</span>
-<span>Home</span>
-</div>
-<div class="nav-item" onclick="switchTab('product')" id="nav-product">
-<span class="nav-icon">🪙</span>
-<span>Products</span>
-</div>
-<div class="nav-item" onclick="switchTab('team')" id="nav-team">
-<span class="nav-icon">👥</span>
-<span>Team</span>
-</div>
-<div class="nav-item" onclick="switchTab('user')" id="nav-user">
-<span class="nav-icon">👤</span>
-<span>User</span>
-</div>
-<div class="nav-item" onclick="switchTab('admin')" id="nav-admin-btn" style="display: none;">
-<span class="nav-icon">⚙️</span>
-<span>Admin</span>
-</div>
+<div class="nav-item active" onclick="switchTab('home')" id="nav-home"><span class="nav-icon">🏠</span><span>Home</span></div>
+<div class="nav-item" onclick="switchTab('product')" id="nav-product"><span class="nav-icon">🪙</span><span>Products</span></div>
+<div class="nav-item" onclick="switchTab('color-game')" id="nav-color-game"><span class="nav-icon">🎮</span><span>Game</span></div>
+<div class="nav-item" onclick="switchTab('team')" id="nav-team"><span class="nav-icon">👥</span><span>Team</span></div>
+<div class="nav-item" onclick="switchTab('user')" id="nav-user"><span class="nav-icon">👤</span><span>User</span></div>
+<div class="nav-item" onclick="switchTab('admin')" id="nav-admin-btn" style="display: none;"><span class="nav-icon">⚙️</span><span>Admin</span></div>
 </div>
 
 </div>
@@ -383,35 +319,14 @@ button.btn-primary { width: 100%; padding: 13px; background-color: #10a330; colo
 <div class="modal-card">
 <span class="close-modal" onclick="closeRechargeModal()">✕</span>
 <h3>Deposit / Recharge</h3>
-<p style="font-size:12px; color:#666; margin-top:4px;">Recharge ₹700+ to get ₹100 Cashback!</p>
-
 <div id="step-amount-view">
-<div class="input-group" style="margin-top:15px;">
-<label>Enter Amount (₹)</label>
-<input type="number" id="deposit-amount" placeholder="e.g. 700">
-</div>
+<div class="input-group" style="margin-top:15px;"><label>Enter Amount (₹)</label><input type="number" id="deposit-amount" placeholder="e.g. 700"></div>
 <button class="btn-primary" onclick="generateDynamicQR()">Generate QR Code</button>
 </div>
-
 <div id="step-qr-view" style="display: none; text-align: center; margin-top: 10px;">
-<div style="font-size: 13px; font-weight: bold; color: #e74c3c; margin-bottom: 5px;">
-⏱️ Time Left: <span id="payment-timer">05:00</span>
-</div>
-<div style="font-size: 13px; color: #333; margin-bottom: 8px;">Scan & Pay: <b>₹<span id="qr-display-amt">0</span></b></div>
-
-<div style="background: #fff; padding: 10px; display: inline-block; border: 1px solid #ddd; border-radius: 10px;">
-<img id="dynamic-qr-img" src="" alt="UPI QR Code" style="width: 180px; height: 180px; display: block;">
-</div>
-
-<div style="font-size: 11px; color: #555; margin-top: 6px;">UPI ID: <b>ravikishankumar20019777@okicici</b></div>
-
-<div class="input-group" style="margin-top: 12px; text-align: left;">
-<label>Enter 12-Digit UTR / Transaction ID</label>
-<input type="text" id="utr-number" placeholder="Enter Ref / UTR No">
-</div>
-
+<div style="background: #fff; padding: 10px; display: inline-block; border: 1px solid #ddd; border-radius: 10px;"><img id="dynamic-qr-img" src="" style="width: 180px; height: 180px;"></div>
+<div class="input-group" style="margin-top: 12px; text-align: left;"><label>Enter 12-Digit UTR / Transaction ID</label><input type="text" id="utr-number" placeholder="Enter Ref / UTR No"></div>
 <button class="btn-primary" onclick="submitManualRecharge()">Submit Payment Proof</button>
-<button class="toggle-btn" onclick="backToAmountStep()" style="margin-top: 6px;">Change Amount</button>
 </div>
 </div>
 </div>
@@ -421,46 +336,20 @@ button.btn-primary { width: 100%; padding: 13px; background-color: #10a330; colo
 <div class="modal-card">
 <span class="close-modal" onclick="closeWithdrawModal()">✕</span>
 <h3>Request Withdrawal</h3>
-<p style="font-size:12px; color:#666; margin-top:4px;">Enter payout details securely</p>
-
-<div class="input-group" style="margin-top:10px;">
-<label>Withdrawal Amount (₹)</label>
-<input type="number" id="withdraw-amt" placeholder="e.g. 500">
-</div>
-
-<div class="input-group" style="margin-top:8px;">
-<label>Choose Payout Method</label>
-<select id="payout-method" onchange="togglePayoutFields()">
-<option value="upi">UPI ID</option>
-<option value="bank">Bank Account (Account No & IFSC)</option>
-</select>
-</div>
-
-<div class="input-group" id="upi-field-box" style="margin-top:8px;">
-<label>UPI ID</label>
-<input type="text" id="withdraw-upi" placeholder="e.g. 9876543210@paytm">
-</div>
-
-<div id="bank-field-box" style="display: none;">
-<div class="input-group" style="margin-top:8px;">
-<label>Account Number</label>
-<input type="text" id="bank-acc-no" placeholder="Enter bank account number">
-</div>
-<div class="input-group" style="margin-top:8px;">
-<label>Confirm Account Number</label>
-<input type="text" id="bank-acc-confirm" placeholder="Re-enter account number">
-</div>
-<div class="input-group" style="margin-top:8px;">
-<label>IFSC Code</label>
-<input type="text" id="bank-ifsc" placeholder="e.g. SBIN0001234" style="text-transform: uppercase;">
-</div>
-<div class="input-group" style="margin-top:8px;">
-<label>Account Holder Name</label>
-<input type="text" id="bank-holder-name" placeholder="Name as per bank passbook">
+<div class="input-group" style="margin-top:10px;"><label>Amount (₹)</label><input type="number" id="withdraw-amt" placeholder="e.g. 500"></div>
+<div class="input-group"><label>Method</label><select id="payout-method"><option value="upi">UPI ID</option></select></div>
+<div class="input-group"><label>UPI ID</label><input type="text" id="withdraw-upi" placeholder="e.g. 9876543210@paytm"></div>
+<button class="btn-primary" onclick="submitWithdrawRequest()">Submit Withdrawal</button>
 </div>
 </div>
 
-<button class="btn-primary" onclick="submitWithdrawRequest()" style="margin-top: 15px;">Submit Withdrawal</button>
+<!-- COLOR BET MODAL -->
+<div class="modal-overlay" id="color-bet-modal">
+<div class="modal-card">
+<span class="close-modal" onclick="closeColorBetModal()">✕</span>
+<h3>Place Bet on <span id="selected-color-title" style="text-transform: uppercase;">Green</span></h3>
+<div class="input-group" style="margin-top:15px;"><label>Amount (₹)</label><input type="number" id="color-bet-amt" placeholder="e.g. 100"></div>
+<button class="btn-primary" onclick="confirmColorBet()">Confirm Bet</button>
 </div>
 </div>
 
@@ -488,10 +377,10 @@ const ADMIN_EMAIL = "ravikishankumar20019777@okicici.com";
 let currentUser = null;
 let userData = {};
 let isLogin = false;
-let confirmationResult = null;
 let allProductsList = [];
+let selectedChoiceColor = "";
+let currentGamePeriod = "2026101601";
 
-// Global Helpers for UI Navigation
 window.switchTab = function(tabName) {
 document.querySelectorAll(".tab-page").forEach(p => p.classList.remove("active-page"));
 document.querySelectorAll(".nav-item").forEach(n => n.classList.remove("active"));
@@ -506,20 +395,19 @@ window.openRechargeModal = () => document.getElementById("recharge-modal").style
 window.closeRechargeModal = () => document.getElementById("recharge-modal").style.display = "none";
 window.openWithdrawModal = () => document.getElementById("withdraw-modal").style.display = "flex";
 window.closeWithdrawModal = () => document.getElementById("withdraw-modal").style.display = "none";
-window.openWhatsAppSupport = () => window.open("https://wa.me/91123456789?text=Hello%20Support,%20I%20need%20help", "_blank");
+
+window.openColorBetModal = (color) => {
+selectedChoiceColor = color;
+document.getElementById("selected-color-title").innerText = color;
+document.getElementById("color-bet-modal").style.display = "flex";
+};
+window.closeColorBetModal = () => document.getElementById("color-bet-modal").style.display = "none";
 
 window.copyReferralLink = () => {
 const refCode = userData.referralCode || "TRK1234";
 const link = window.location.origin + window.location.pathname + "?ref=" + refCode;
 navigator.clipboard.writeText(link).then(() => alert("Referral Link Copied!"));
 };
-
-// AUTO-FILL REFERRAL CODE FROM URL
-const urlParams = new URLSearchParams(window.location.search);
-const refUrlParam = urlParams.get('ref');
-if(refUrlParam) {
-document.getElementById("reg-ref").value = refUrlParam.toUpperCase();
-}
 
 const authScreen = document.getElementById("auth-screen");
 const dashboardScreen = document.getElementById("dashboard-screen");
@@ -552,78 +440,20 @@ if (!email || !password) return alert("Fill all required fields");
 if (isLogin) {
 signInWithEmailAndPassword(auth, email, password).catch(e => alert(e.message));
 } else {
-if (!phone || phone.length < 10) return alert("Please enter a valid mobile number");
-
+if (!phone || phone.length < 10) return alert("Enter valid mobile number");
 createUserWithEmailAndPassword(auth, email, password)
 .then(async (res) => {
 const myRefCode = "TRK" + Math.floor(1000 + Math.random() * 9000);
-
 await setDoc(doc(db, "users", res.user.uid), {
 name: name || "User",
 phone: phone || "",
 email: email,
-balance: 0,
-deposit: 0,
-withdraw: 0,
-cashback: 0,
-referrals: 0,
-referralCode: myRefCode,
-referredBy: refCode || null,
-activeProducts: {}
+balance: 0, deposit: 0, withdraw: 0, cashback: 0, referrals: 0,
+referralCode: myRefCode, referredBy: refCode || null, activeProducts: {}
 });
-
-if (refCode) {
-const q = query(collection(db, "users"), where("referralCode", "==", refCode));
-const querySnap = await getDocs(q);
-querySnap.forEach(async (docRef) => {
-const inviter = docRef.data();
-await updateDoc(doc(db, "users", docRef.id), {
-referrals: (inviter.referrals || 0) + 1
-});
-});
-}
 }).catch(e => alert(e.message));
 }
 });
-
-window.showOTPResetView = () => {
-document.getElementById("standard-auth-box").style.display = "none";
-document.getElementById("otp-reset-box").style.display = "block";
-formTitle.innerText = "Reset via OTP";
-
-if (!window.recaptchaVerifier) {
-window.recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', { 'size': 'invisible' });
-}
-};
-
-window.hideOTPResetView = () => {
-document.getElementById("standard-auth-box").style.display = "block";
-document.getElementById("otp-reset-box").style.display = "none";
-formTitle.innerText = isLogin ? "Login" : "Create Account";
-};
-
-window.sendMobileOTP = () => {
-let phoneNum = document.getElementById("otp-phone").value.trim();
-if (!phoneNum.startsWith("+")) phoneNum = "+91" + phoneNum;
-if (phoneNum.length < 12) return alert("Please enter 10-digit phone number");
-
-signInWithPhoneNumber(auth, phoneNum, window.recaptchaVerifier)
-.then((result) => {
-confirmationResult = result;
-alert("OTP Sent to your Mobile Number!");
-document.getElementById("otp-input-group").style.display = "block";
-}).catch((error) => { alert("Failed to send OTP: " + error.message); });
-};
-
-window.verifyMobileOTP = () => {
-const code = document.getElementById("otp-code").value.trim();
-if (!code || code.length !== 6) return alert("Enter 6-digit OTP code");
-
-confirmationResult.confirm(code).then(() => {
-alert("Mobile Verified Successfully!");
-hideOTPResetView();
-}).catch(() => { alert("Invalid OTP Code!"); });
-};
 
 window.triggerLogout = () => signOut(auth);
 document.getElementById("logout-btn").addEventListener("click", () => signOut(auth));
@@ -650,23 +480,12 @@ userData = docSnap.data();
 document.querySelectorAll(".user-display-name").forEach(e => e.innerText = userData.name || "User");
 document.getElementById("user-display-email").innerText = userData.email || user.email || "N/A";
 document.getElementById("user-display-phone").innerText = userData.phone || "N/A";
-
 document.getElementById("val-balance").innerText = "₹" + (userData.balance || 0).toFixed(2);
 document.getElementById("val-deposit").innerText = "₹" + (userData.deposit || 0);
 document.getElementById("val-withdraw").innerText = "₹" + (userData.withdraw || 0);
 document.getElementById("val-cashback").innerText = "₹" + (userData.cashback || 0).toFixed(2);
 document.getElementById("val-ref").innerText = userData.referrals || 0;
 document.getElementById("user-ref-code").innerText = userData.referralCode || "TRK1234";
-
-let totalDailyRate = 0;
-if (userData.activeProducts) {
-for (let key in userData.activeProducts) {
-if (userData.activeProducts[key].active) {
-totalDailyRate += (userData.activeProducts[key].dailyRate || 0);
-}
-}
-}
-document.getElementById("val-daily-earning").innerText = "₹" + totalDailyRate;
 renderProductsUI();
 }
 });
@@ -676,56 +495,89 @@ loadRechargeStatus(user.uid);
 loadWithdrawalStatus(user.uid);
 loadTeamMembers(user.uid);
 loadClaimedIncomeHistory(user.uid);
-
+loadColorBetHistory(user.uid);
 } else {
 authScreen.style.display = "block";
 dashboardScreen.style.display = "none";
 }
 });
 
+// COLOR TRADING BET ACTION
+window.confirmColorBet = async () => {
+const amt = parseFloat(document.getElementById("color-bet-amt").value);
+if(!amt || amt <= 0) return alert("कृपया वैध राशि दर्ज करें!");
+if((userData.balance || 0) < amt) return alert("पर्याप्त बैलेंस नहीं है! कृपया पहले रिचार्ज करें।");
+
+try {
+await updateDoc(doc(db, "users", currentUser.uid), { balance: userData.balance - amt });
+await addDoc(collection(db, "color_bets"), {
+userId: currentUser.uid, userName: userData.name || "User",
+periodId: currentGamePeriod, choice: selectedChoiceColor,
+amount: amt, status: "pending", timestamp: Date.now()
+});
+alert("सफलतापूर्वक बेट लग गई है!");
+closeColorBetModal();
+document.getElementById("color-bet-amt").value = "";
+} catch(e) { alert("त्रुटि: " + e.message); }
+};
+
+function loadColorBetHistory(uid) {
+const q = query(collection(db, "color_bets"), where("userId", "==", uid));
+onSnapshot(q, (snapshot) => {
+const container = document.getElementById("color-bets-history");
+if(snapshot.empty) {
+container.innerHTML = `<p style="font-size:12px; color:#888; text-align:center;">No bets placed yet.</p>`;
+return;
+}
+let html = "";
+snapshot.forEach(docSnap => {
+let d = docSnap.data();
+let stClass = d.status === 'win' ? 'status-approved' : (d.status === 'loss' ? 'status-rejected' : 'status-pending');
+html += `<div class="history-item"><span>₹${d.amount} on <b style="text-transform:uppercase;">${d.choice}</b></span><span class="${stClass}">${d.status}</span></div>`;
+});
+container.innerHTML = html;
+});
+}
+
+// ADMIN COLOR GAME RESULT
+window.setAdminGameResult = async () => {
+const periodId = document.getElementById("admin-period-id").value.trim();
+const winColor = document.getElementById("admin-win-color").value;
+const winNumber = parseInt(document.getElementById("admin-win-number").value);
+if (!periodId) return alert("कृपया पीरियड आईडी दर्ज करें!");
+
+try {
+await setDoc(doc(db, "color_rounds", periodId), {
+periodId: periodId, resultColor: winColor, resultNumber: winNumber, status: "locked", timestamp: Date.now()
+}, { merge: true });
+alert(`सफलतापूर्वक पीरियड ${periodId} का परिणाम सेट कर दिया गया है!`);
+} catch (error) { alert("त्रुटि: " + error.message); }
+};
+
+// STANDARD FUNCTIONS FOR PRODUCTS & RECHARGE
 window.addNewProductAdmin = async () => {
 const title = document.getElementById("adm-p-title").value.trim();
 const price = parseFloat(document.getElementById("adm-p-price").value);
 const daily = parseFloat(document.getElementById("adm-p-daily").value);
 const days = parseInt(document.getElementById("adm-p-days").value);
-
 if(!title || !price || !daily || !days) return alert("Fill all product fields!");
-
 try {
 let pId = "prod_" + Date.now();
-await setDoc(doc(db, "products", pId), {
-id: pId,
-title: title,
-price: price,
-dailyIncome: daily,
-cycle: days,
-createdAt: Date.now()
-});
+await setDoc(doc(db, "products", pId), { id: pId, title, price, dailyIncome: daily, cycle: days, createdAt: Date.now() });
 alert("New Product Added Successfully!");
-document.getElementById("adm-p-title").value = "";
-document.getElementById("adm-p-price").value = "";
-document.getElementById("adm-p-daily").value = "";
-document.getElementById("adm-p-days").value = "";
 } catch(e) { alert(e.message); }
 };
 
 function loadProductsFromDB() {
 onSnapshot(collection(db, "products"), (snapshot) => {
 let products = [];
-snapshot.forEach((docSnap) => {
-products.push(docSnap.data());
-});
-
+snapshot.forEach((docSnap) => products.push(docSnap.data()));
 if(products.length === 0) {
 products = [
 { id: "silver_chain", title: "🔗 Silver Chain", price: 700, dailyIncome: 61, cycle: 31 },
-{ id: "silver_coin_10g", title: "🪙 Silver Coin (10g)", price: 1200, dailyIncome: 90, cycle: 28 },
-{ id: "silver_bracelet", title: "📿 Silver Bracelet", price: 3100, dailyIncome: 210, cycle: 31 },
-{ id: "silver_coin_30g", title: "🪙 Silver Coin (30g)", price: 5100, dailyIncome: 310, cycle: 36 },
-{ id: "gold_coin_1g", title: "🪙 Gold Coin (1g)", price: 7999, dailyIncome: 410, cycle: 47 }
+{ id: "silver_coin_10g", title: "🪙 Silver Coin (10g)", price: 1200, dailyIncome: 90, cycle: 28 }
 ];
 }
-
 allProductsList = products;
 renderProductsUI();
 });
@@ -734,302 +586,135 @@ renderProductsUI();
 function renderProductsUI() {
 const container = document.getElementById("dynamic-products-list");
 if(!container) return;
-
 let html = "";
 allProductsList.forEach(p => {
 let isActive = userData.activeProducts && userData.activeProducts[p.id] && userData.activeProducts[p.id].active;
-
 html += `
 <div class="product-card">
-<div class="product-head">
-<div class="product-title">${p.title}</div>
-<span class="badge ${isActive ? 'badge-active' : ''}">${isActive ? 'Active' : 'Not Active'}</span>
-</div>
+<div class="product-head"><div class="product-title">${p.title}</div><span class="badge ${isActive ? 'badge-active' : ''}">${isActive ? 'Active' : 'Not Active'}</span></div>
 <div class="row-detail"><span>Price</span><span class="val">₹${p.price}</span></div>
-<div class="row-detail"><span>Cycle</span><span class="val">${p.cycle} Days</span></div>
 <div class="row-detail"><span>Daily Income</span><span class="val">₹${p.dailyIncome}</span></div>
-<div class="row-detail"><span>Total Return</span><span class="val">₹${p.dailyIncome * p.cycle}</span></div>
-${!isActive ? 
-`<button class="btn-action" onclick="buyProduct('${p.id}', ${p.price},${p.dailyIncome})">Buy (${p.title}) - ₹${p.price}</button>` :
-`<button class="btn-action" style="background:#ffb703;" onclick="claimDailyIncome('${p.id}', '${p.title}',${p.dailyIncome})">Claim Daily Income (₹${p.dailyIncome})</button>`
-}
+${!isActive ? `<button class="btn-action" onclick="buyProduct('${p.id}',${p.price}, ${p.dailyIncome})">Buy - ₹${p.price}</button>` : `<button class="btn-action" style="background:#ffb703;" onclick="claimDailyIncome('${p.id}', '${p.title}',${p.dailyIncome})">Claim Income</button>`}
 </div>`;
 });
 container.innerHTML = html;
 }
 
 window.buyProduct = async (pKey, price, daily) => {
-if((userData.balance || 0) < price) return alert("Insufficient Balance! Recharge first.");
-try {
+if((userData.balance || 0) < price) return alert("Insufficient Balance!");
 let activeProds = userData.activeProducts || {};
 activeProds[pKey] = { active: true, dailyRate: daily, lastClaim: null };
-await updateDoc(doc(db, "users", currentUser.uid), {
-balance: userData.balance - price,
-activeProducts: activeProds
-});
-alert("Product Purchased Successfully!");
-} catch(e) { alert(e.message); }
+await updateDoc(doc(db, "users", currentUser.uid), { balance: userData.balance - price, activeProducts: activeProds });
+alert("Product Purchased!");
 };
 
 window.claimDailyIncome = async (pKey, pTitle, daily) => {
 let activeProds = userData.activeProducts || {};
 let now = Date.now();
-let lastClaim = activeProds[pKey]?.lastClaim || 0;
-
-if(now - lastClaim < 86400000) {
-return alert("You can only claim daily income once every 24 hours!");
-}
-
+if(now - (activeProds[pKey]?.lastClaim || 0) < 86400000) return alert("Claim available once every 24 hours!");
 activeProds[pKey].lastClaim = now;
-await updateDoc(doc(db, "users", currentUser.uid), {
-balance: (userData.balance || 0) + daily,
-activeProducts: activeProds
-});
-
-await addDoc(collection(db, "claimed_income"), {
-userId: currentUser.uid,
-productTitle: pTitle,
-amount: daily,
-timestamp: now
-});
-
-alert("Daily Income Claimed Successfully!");
+await updateDoc(doc(db, "users", currentUser.uid), { balance: (userData.balance || 0) + daily, activeProducts: activeProds });
+await addDoc(collection(db, "claimed_income"), { userId: currentUser.uid, productTitle: pTitle, amount: daily, timestamp: now });
+alert("Claimed Successfully!");
 };
 
-window.generateDynamicQR = async () => {
+window.generateDynamicQR = () => {
 const amt = parseFloat(document.getElementById("deposit-amount").value);
-if(!amt || amt <= 0) return alert("Enter valid deposit amount");
-
-document.getElementById("qr-display-amt").innerText = amt;
+if(!amt || amt <= 0) return alert("Enter amount");
 document.getElementById("dynamic-qr-img").src = `https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=upi://pay?pa=ravikishankumar20019777@okicici&am=${amt}&cu=INR`;
 document.getElementById("step-amount-view").style.display = "none";
 document.getElementById("step-qr-view").style.display = "block";
 };
 
-window.backToAmountStep = () => {
-document.getElementById("step-amount-view").style.display = "block";
-document.getElementById("step-qr-view").style.display = "none";
-};
-
 window.submitManualRecharge = async () => {
 const amt = parseFloat(document.getElementById("deposit-amount").value);
 const utr = document.getElementById("utr-number").value.trim();
-if(!utr || utr.length < 6) return alert("Enter valid 12-digit UTR/Transaction ID");
-
-try {
-await addDoc(collection(db, "deposits"), {
-userId: currentUser.uid,
-userName: userData.name || "User",
-amount: amt,
-utr: utr,
-status: "Pending",
-timestamp: Date.now()
-});
-alert("Deposit proof submitted successfully! Verification takes 5-10 minutes.");
+if(!utr) return alert("Enter UTR");
+await addDoc(collection(db, "deposits"), { userId: currentUser.uid, userName: userData.name || "User", amount: amt, utr, status: "Pending", timestamp: Date.now() });
+alert("Submitted successfully!");
 closeRechargeModal();
-backToAmountStep();
-document.getElementById("deposit-amount").value = "";
-document.getElementById("utr-number").value = "";
-} catch(e) { alert(e.message); }
-};
-
-window.togglePayoutFields = () => {
-const method = document.getElementById("payout-method").value;
-document.getElementById("upi-field-box").style.display = (method === 'upi') ? 'block' : 'none';
-document.getElementById("bank-field-box").style.display = (method === 'bank') ? 'block' : 'none';
 };
 
 window.submitWithdrawRequest = async () => {
 const amt = parseFloat(document.getElementById("withdraw-amt").value);
-if(!amt || amt <= 0) return alert("Enter valid withdrawal amount");
-if((userData.balance || 0) < amt) return alert("Insufficient Balance for Withdrawal!");
-
-const method = document.getElementById("payout-method").value;
-let payoutDetails = {};
-
-if(method === 'upi') {
 const upi = document.getElementById("withdraw-upi").value.trim();
-if(!upi) return alert("Enter valid UPI ID");
-payoutDetails = { method: 'UPI', target: upi };
-} else {
-const acc1 = document.getElementById("bank-acc-no").value.trim();
-const acc2 = document.getElementById("bank-acc-confirm").value.trim();
-const ifsc = document.getElementById("bank-ifsc").value.trim();
-const name = document.getElementById("bank-holder-name").value.trim();
-if(!acc1 || acc1 !== acc2 || !ifsc || !name) return alert("Verify bank details properly");
-payoutDetails = { method: 'Bank', account: acc1, ifsc: ifsc, holder: name };
-}
-
-try {
-await addDoc(collection(db, "withdrawals"), {
-userId: currentUser.uid,
-userName: userData.name || "User",
-amount: amt,
-payoutInfo: payoutDetails,
-status: "Pending",
-timestamp: Date.now()
-});
-
-await updateDoc(doc(db, "users", currentUser.uid), {
-balance: userData.balance - amt
-});
-
-alert("Withdrawal request submitted successfully!");
+if(!amt || (userData.balance || 0) < amt) return alert("Invalid amount or low balance");
+await addDoc(collection(db, "withdrawals"), { userId: currentUser.uid, userName: userData.name || "User", amount: amt, payoutInfo: { method: 'UPI', target: upi }, status: "Pending", timestamp: Date.now() });
+await updateDoc(doc(db, "users", currentUser.uid), { balance: userData.balance - amt });
+alert("Withdrawal requested!");
 closeWithdrawModal();
-document.getElementById("withdraw-amt").value = "";
-} catch(e) { alert(e.message); }
 };
 
 function loadRechargeStatus(uid) {
-const q = query(collection(db, "deposits"), where("userId", "==", uid));
-onSnapshot(q, (snapshot) => {
-const container = document.getElementById("recharge-history-list");
-if(snapshot.empty) {
-container.innerHTML = `<p style="font-size:12px; color:#888; text-align:center;">No recharge history found.</p>`;
-return;
-}
+onSnapshot(query(collection(db, "deposits"), where("userId", "==", uid)), (snapshot) => {
 let html = "";
-snapshot.forEach(docSnap => {
-let d = docSnap.data();
-let stClass = d.status === 'Approved' ? 'status-approved' : (d.status === 'Rejected' ? 'status-rejected' : 'status-pending');
-html += `<div class="history-item"><span>₹${d.amount} (UTR: ${d.utr})</span><span class="${stClass}">${d.status}</span></div>`;
-});
-container.innerHTML = html;
+snapshot.forEach(d => { let data = d.data(); html += `<div class="history-item"><span>₹${data.amount}</span><span class="status-${data.status.toLowerCase()}">${data.status}</span></div>`; });
+document.getElementById("recharge-history-list").innerHTML = html || '<p style="font-size:12px; color:#888; text-align:center;">No history</p>';
 });
 }
 
 function loadWithdrawalStatus(uid) {
-const q = query(collection(db, "withdrawals"), where("userId", "==", uid));
-onSnapshot(q, (snapshot) => {
-const container = document.getElementById("withdrawal-history-list");
-if(snapshot.empty) {
-container.innerHTML = `<p style="font-size:12px; color:#888; text-align:center;">No withdrawal history found.</p>`;
-return;
-}
+onSnapshot(query(collection(db, "withdrawals"), where("userId", "==", uid)), (snapshot) => {
 let html = "";
-snapshot.forEach(docSnap => {
-let d = docSnap.data();
-let stClass = d.status === 'Approved' ? 'status-approved' : (d.status === 'Rejected' ? 'status-rejected' : 'status-pending');
-html += `<div class="history-item"><span>₹${d.amount} (${d.payoutInfo.method})</span><span class="${stClass}">${d.status}</span></div>`;
-});
-container.innerHTML = html;
+snapshot.forEach(d => { let data = d.data(); html += `<div class="history-item"><span>₹${data.amount}</span><span class="status-${data.status.toLowerCase()}">${data.status}</span></div>`; });
+document.getElementById("withdrawal-history-list").innerHTML = html || '<p style="font-size:12px; color:#888; text-align:center;">No history</p>';
 });
 }
 
 function loadTeamMembers(uid) {
-const q = query(collection(db, "users"), where("referredBy", "==", userData.referralCode || ""));
-onSnapshot(q, (snapshot) => {
-const container = document.getElementById("team-members-list");
-if(snapshot.empty) {
-container.innerHTML = `<p style="font-size:12px; color:#888; text-align:center;">No team members found.</p>`;
-return;
-}
+onSnapshot(query(collection(db, "users"), where("referredBy", "==", userData.referralCode || "")), (snapshot) => {
 let html = "";
-snapshot.forEach(docSnap => {
-let m = docSnap.data();
-html += `<div class="history-item"><span>👤 ${m.name} (${m.email})</span><span style="color:#10a330; font-weight:bold;">Active</span></div>`;
-});
-container.innerHTML = html;
+snapshot.forEach(d => { let m = d.data(); html += `<div class="history-item"><span>👤 ${m.name}</span><span style="color:#10a330; font-weight:bold;">Active</span></div>`; });
+document.getElementById("team-members-list").innerHTML = html || '<p style="font-size:12px; color:#888; text-align:center;">No team members</p>';
 });
 }
 
 function loadClaimedIncomeHistory(uid) {
-const q = query(collection(db, "claimed_income"), where("userId", "==", uid));
-onSnapshot(q, (snapshot) => {
-const container = document.getElementById("claimed-income-history-list");
-if(snapshot.empty) {
-container.innerHTML = `<p style="font-size:12px; color:#888; text-align:center;">No income claimed yet.</p>`;
-return;
-}
+onSnapshot(query(collection(db, "claimed_income"), where("userId", "==", uid)), (snapshot) => {
 let html = "";
-snapshot.forEach(docSnap => {
-let d = docSnap.data();
-let dateStr = new Date(d.timestamp).toLocaleDateString();
-html += `<div class="history-item"><span>${d.productTitle} (${dateStr})</span><span style="color:#27ae60; font-weight:bold;">+₹${d.amount}</span></div>`;
-});
-container.innerHTML = html;
+snapshot.forEach(d => { let data = d.data(); html += `<div class="history-item"><span>${data.productTitle}</span><span style="color:#27ae60; font-weight:bold;">+₹${data.amount}</span></div>`; });
+document.getElementById("claimed-income-history-list").innerHTML = html || '<p style="font-size:12px; color:#888; text-align:center;">No income claimed</p>';
 });
 }
 
 function loadAdminDeposits() {
 onSnapshot(collection(db, "deposits"), (snapshot) => {
-const container = document.getElementById("admin-deposits-list");
 let html = "";
 snapshot.forEach(docSnap => {
 let d = docSnap.data();
 if(d.status === 'Pending') {
-html += `
-<div class="history-item" style="flex-direction:column; align-items:flex-start; gap:6px;">
-<div><b>${d.userName}</b> - ₹${d.amount} (UTR: ${d.utr})</div>
-<div style="display:flex; gap:10px; width:100%;">
-<button class="btn-action" style="padding:6px; background:#28a745;" onclick="approveDeposit('${docSnap.id}', '${d.userId}', ${d.amount})">Approve</button>
-<button class="btn-action" style="padding:6px; background:#dc3545;" onclick="rejectDeposit('${docSnap.id}')">Reject</button>
-</div>
-</div>`;
+html += `<div class="history-item"><span><b>${d.userName}</b> - ₹${d.amount}</span><button class="btn-action" style="padding:4px 8px; width:auto;" onclick="approveDeposit('${docSnap.id}', '${d.userId}', ${d.amount})">Approve</button></div>`;
 }
 });
-container.innerHTML = html || `<p style="font-size:12px; color:#888; text-align:center;">No pending deposits.</p>`;
+document.getElementById("admin-deposits-list").innerHTML = html || '<p style="font-size:12px; color:#888; text-align:center;">No pending</p>';
 });
 }
 
 function loadAdminWithdrawals() {
 onSnapshot(collection(db, "withdrawals"), (snapshot) => {
-const container = document.getElementById("admin-withdrawals-list");
 let html = "";
 snapshot.forEach(docSnap => {
 let d = docSnap.data();
 if(d.status === 'Pending') {
-html += `
-<div class="history-item" style="flex-direction:column; align-items:flex-start; gap:6px;">
-<div><b>${d.userName}</b> - ₹${d.amount} (${d.payoutInfo.method})</div>
-<div style="display:flex; gap:10px; width:100%;">
-<button class="btn-action" style="padding:6px; background:#28a745;" onclick="approveWithdrawal('${docSnap.id}')">Approve Payout</button>
-<button class="btn-action" style="padding:6px; background:#dc3545;" onclick="rejectWithdrawal('${docSnap.id}', '${d.userId}', ${d.amount})">Reject & Refund</button>
-</div>
-</div>`;
+html += `<div class="history-item"><span><b>${d.userName}</b> - ₹${d.amount}</span><button class="btn-action" style="padding:4px 8px; width:auto;" onclick="approveWithdrawal('${docSnap.id}')">Approve</button></div>`;
 }
 });
-container.innerHTML = html || `<p style="font-size:12px; color:#888; text-align:center;">No pending withdrawals.</p>`;
+document.getElementById("admin-withdrawals-list").innerHTML = html || '<p style="font-size:12px; color:#888; text-align:center;">No pending</p>';
 });
 }
 
 window.approveDeposit = async (id, uid, amt) => {
-try {
 await updateDoc(doc(db, "deposits", id), { status: "Approved" });
 const uDoc = await getDoc(doc(db, "users", uid));
 if(uDoc.exists()) {
-let uData = uDoc.data();
-let cashbackBonus = (amt >= 700) ? 100 : 0;
-await updateDoc(doc(db, "users", uid), {
-deposit: (uData.deposit || 0) + amt,
-balance: (uData.balance || 0) + amt + cashbackBonus,
-cashback: (uData.cashback || 0) + cashbackBonus
-});
+await updateDoc(doc(db, "users", uid), { deposit: (uDoc.data().deposit || 0) + amt, balance: (uDoc.data().balance || 0) + amt });
 }
-alert("Deposit Approved!");
-} catch(e) { alert(e.message); }
-};
-
-window.rejectDeposit = async (id) => {
-await updateDoc(doc(db, "deposits", id), { status: "Rejected" });
-alert("Deposit Rejected");
+alert("Approved!");
 };
 
 window.approveWithdrawal = async (id) => {
 await updateDoc(doc(db, "withdrawals", id), { status: "Approved" });
-alert("Withdrawal Approved!");
-};
-
-window.rejectWithdrawal = async (id, uid, amt) => {
-await updateDoc(doc(db, "withdrawals", id), { status: "Rejected" });
-const uDoc = await getDoc(doc(db, "users", uid));
-if(uDoc.exists()) {
-let uData = uDoc.data();
-await updateDoc(doc(db, "users", uid), {
-balance: (uData.balance || 0) + amt
-});
-}
-alert("Withdrawal Rejected & Refunded to User Balance");
+alert("Approved!");
 };
 </script>
 </body>
